@@ -14,13 +14,13 @@
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Noto Serif SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
             background: #e7e5e4;
         }
         
-        /* 背景图片系统 */
+        /* 背景系统 */
         .bg-container {
             position: fixed;
             top: 0;
@@ -28,7 +28,7 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background: #e7e5e4;
+            background: #1a1a1a;
         }
         
         .bg-image {
@@ -54,10 +54,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.1) 100%);
+            background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.6) 100%);
         }
         
-        /* 加载状态 */
+        /* 加载文字 */
         .loading-text {
             position: fixed;
             top: 50%;
@@ -65,7 +65,7 @@
             transform: translate(-50%, -50%);
             color: #78716c;
             font-size: 0.9rem;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.2em;
             z-index: -1;
             opacity: 1;
             transition: opacity 0.5s;
@@ -82,29 +82,29 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 1rem;
             position: relative;
             z-index: 1;
         }
         
         /* 玻璃拟态卡片 */
         .glass-card {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 32px;
+            box-shadow: 0 25px 80px -20px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             width: 100%;
-            max-width: 1200px;
-            animation: cardFloat 1s ease-out;
+            max-width: 1100px;
+            animation: cardFloat 1.2s ease-out;
         }
         
         @keyframes cardFloat {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(40px);
             }
             to {
                 opacity: 1;
@@ -112,43 +112,111 @@
             }
         }
         
-        /* 标题区域 */
-        .header {
-            padding: 2rem 2.5rem 1.5rem;
+        /* ===== 突出显示的日期区域 ===== */
+        .hero-date-section {
+            padding: 3rem 2rem 2rem;
+            text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
         
-        .site-title {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 1.75rem;
-            font-weight: 600;
+        .year-month {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.3em;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+        }
+        
+        /* 大日期显示 */
+        .big-day {
+            font-size: clamp(6rem, 20vw, 12rem);
+            font-weight: 700;
             color: rgba(255, 255, 255, 0.95);
+            line-height: 1;
+            margin: 0.5rem 0;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            font-family: 'Noto Serif SC', serif;
             letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+        }
+        
+        .weekday-name {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.5em;
+            margin-top: 0.5rem;
+        }
+        
+        /* 农历日期 */
+        .lunar-info {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .lunar-date {
-            font-size: 0.85rem;
+            font-size: 1rem;
             color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.15em;
+        }
+        
+        .lunar-festival {
+            font-size: 0.85rem;
+            color: #d97706;
+            margin-top: 0.3rem;
             letter-spacing: 0.1em;
         }
         
-        /* 主体布局 */
-        .content {
+        /* ===== 古诗词区域 ===== */
+        .poetry-section {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.03);
+            text-align: center;
+        }
+        
+        .poetry-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .poetry-quote {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 2;
+            letter-spacing: 0.1em;
+            font-weight: 400;
+        }
+        
+        .poetry-author {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 1rem;
+            letter-spacing: 0.2em;
+        }
+        
+        .poetry-divider {
+            width: 40px;
+            height: 1px;
+            background: rgba(217, 119, 6, 0.5);
+            margin: 1.5rem auto;
+        }
+        
+        /* ===== 主体内容区域 ===== */
+        .content-body {
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            min-height: 500px;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
         }
         
         @media (max-width: 900px) {
-            .content {
+            .content-body {
                 grid-template-columns: 1fr;
             }
         }
         
-        /* 日历区域 */
+        /* 日历网格区域 */
         .calendar-section {
-            padding: 2rem 2.5rem;
+            padding: 2rem;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -167,16 +235,15 @@
         }
         
         .current-month {
-            font-family: 'Noto Serif SC', serif;
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.1em;
         }
         
         .nav-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
             width: 36px;
             height: 36px;
             border-radius: 50%;
@@ -185,25 +252,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.1);
         }
         
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
+            gap: 0.6rem;
         }
         
         .weekday {
             text-align: center;
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            padding: 0.75rem 0;
+            color: rgba(255, 255, 255, 0.35);
+            padding: 0.6rem 0;
             font-weight: 500;
             letter-spacing: 0.05em;
         }
@@ -214,41 +281,32 @@
             align-items: center;
             justify-content: center;
             font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.8);
             cursor: pointer;
-            border-radius: 50%;
+            border-radius: 12px;
             transition: all 0.3s;
             position: relative;
         }
         
         .calendar-day:hover {
             background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
         }
         
         .calendar-day.other-month {
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.25);
         }
         
         .calendar-day.today {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
+            background: rgba(217, 119, 6, 0.3);
+            border: 1px solid rgba(217, 119, 6, 0.5);
             font-weight: 600;
+            color: #fff;
         }
         
         .calendar-day.selected {
-            color: #d97706;
-        }
-        
-        .calendar-day.selected::after {
-            content: '';
-            position: absolute;
-            bottom: 4px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: #d97706;
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         }
         
         /* 信息面板 */
@@ -256,7 +314,7 @@
             padding: 2rem;
             display: flex;
             flex-direction: column;
-            gap: 2rem;
+            gap: 1.5rem;
         }
         
         /* 天气模块 */
@@ -276,14 +334,14 @@
         
         .location {
             font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.4);
             letter-spacing: 0.05em;
         }
         
         .aqi-badge {
             font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            background: rgba(16, 185, 129, 0.2);
+            padding: 0.25rem 0.7rem;
+            background: rgba(16, 185, 129, 0.15);
             color: #34d399;
             border-radius: 20px;
         }
@@ -291,30 +349,31 @@
         .weather-main {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.2rem;
         }
         
         .weather-icon {
-            font-size: 3rem;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+            font-size: 3.5rem;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
         }
         
         .temperature {
-            font-size: 3rem;
+            font-size: 3.2rem;
             font-weight: 300;
             color: rgba(255, 255, 255, 0.95);
             line-height: 1;
+            font-family: 'Inter', sans-serif;
         }
         
         .weather-desc {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 0.25rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.3rem;
         }
         
         /* 穿衣建议模块 */
         .clothing-module {
-            background: rgba(217, 119, 6, 0.15);
+            background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(217, 119, 6, 0.05));
             border: 1px solid rgba(217, 119, 6, 0.3);
             border-radius: 16px;
             padding: 1.5rem;
@@ -322,50 +381,66 @@
         
         .clothing-title {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 0.15em;
             margin-bottom: 0.75rem;
             text-transform: uppercase;
         }
         
         .clothing-advice {
-            font-size: 1rem;
-            line-height: 1.7;
+            font-size: 1.05rem;
+            line-height: 1.8;
             color: rgba(255, 255, 255, 0.9);
         }
         
         .clothing-icons {
             margin-top: 1rem;
-            font-size: 1.5rem;
-            letter-spacing: 0.5rem;
+            font-size: 1.8rem;
+            letter-spacing: 0.8rem;
         }
         
         /* 页脚 */
         .footer {
-            padding: 1.5rem 2.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.8rem 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
         }
         
         .footer-text {
-            font-family: 'Noto Serif SC', serif;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.35);
+            letter-spacing: 0.15em;
         }
         
         /* 响应式调整 */
         @media (max-width: 768px) {
             .main-container {
-                padding: 1rem;
+                padding: 0.8rem;
             }
             
-            .header {
-                padding: 1.5rem 1.5rem 1rem;
+            .glass-card {
+                border-radius: 24px;
             }
             
-            .site-title {
-                font-size: 1.5rem;
+            .hero-date-section {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+            
+            .big-day {
+                font-size: clamp(5rem, 18vw, 8rem);
+            }
+            
+            .weekday-name {
+                font-size: 1.2rem;
+                letter-spacing: 0.3em;
+            }
+            
+            .poetry-section {
+                padding: 1.5rem;
+            }
+            
+            .poetry-quote {
+                font-size: 1.15rem;
             }
             
             .calendar-section,
@@ -374,7 +449,7 @@
             }
             
             .temperature {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
         }
     </style>
@@ -391,15 +466,31 @@
     <!-- 主容器 -->
     <div class="main-container">
         <div class="glass-card">
-            <!-- 标题区域 -->
-            <header class="header">
-                <h1 class="site-title">张公羽的个人日历</h1>
-                <p class="lunar-date" id="lunarDate">农历正月初三 · 乙巳年</p>
-            </header>
+            <!-- 突出显示的日期区域 -->
+            <section class="hero-date-section">
+                <p class="year-month" id="yearMonth">2026年 2月</p>
+                <h1 class="big-day" id="bigDay">1</h1>
+                <p class="weekday-name" id="weekdayName">星期日</p>
+                
+                <div class="lunar-info">
+                    <p class="lunar-date" id="lunarDate">农历正月初四 · 乙巳年</p>
+                    <p class="lunar-festival" id="lunarFestival"></p>
+                </div>
+            </section>
+            
+            <!-- 古诗词区域 -->
+            <section class="poetry-section">
+                <div class="poetry-content">
+                    <p class="poetry-quote" id="poetryLine1">一年之计在于春</p>
+                    <p class="poetry-quote" id="poetryLine2">一日之计在于晨</p>
+                    <div class="poetry-divider"></div>
+                    <p class="poetry-author" id="poetryAuthor">—— 《增广贤文》</p>
+                </div>
+            </section>
             
             <!-- 主体内容 -->
-            <div class="content">
-                <!-- 日历区域 -->
+            <div class="content-body">
+                <!-- 日历网格 -->
                 <section class="calendar-section">
                     <div class="calendar-header">
                         <button class="nav-btn" onclick="changeMonth(-1)">‹</button>
@@ -440,9 +531,7 @@
                     <!-- 穿衣建议模块 -->
                     <div class="clothing-module" id="clothingModule">
                         <p class="clothing-title">今日穿搭</p>
-                        <p class="clothing-advice" id="clothingAdvice">
-                            正在分析天气数据...
-                        </p>
+                        <p class="clothing-advice" id="clothingAdvice">正在分析天气数据...</p>
                         <div class="clothing-icons" id="clothingIcons">👔</div>
                     </div>
                 </aside>
@@ -456,42 +545,154 @@
     </div>
 
     <script>
+        // ===== 古诗词数据库 =====
+        const poetryDatabase = [
+            { lines: ["一年之计在于春", "一日之计在于晨"], author: "《增广贤文》" },
+            { lines:["春眠不觉晓", "处处闻啼鸟"], author: "孟浩然《春晓》" },
+            { lines:["好雨知时节", "当春乃发生"], author: "杜甫《春夜喜雨》" },
+            { lines:["迟日江山丽", "春风花草香"], author: "杜甫《绝句》" },
+            { lines:["红豆生南国", "春来发几枝"], author: "王维《相思》" },
+            { lines:["人面不知何处去", "桃花依旧笑春风"], author: "崔护《题都城南庄》" },
+            { lines:["沾衣欲湿杏花雨", "吹面不寒杨柳风"], author: "志南《绝句》" },
+            { lines:["春色满园关不住", "一枝红杏出墙来"], author: "叶绍翁《游园不值》" },
+            { lines:["竹外桃花三两枝", "春江水暖鸭先知"], author: "苏轼《惠崇春江晚景》" },
+            { lines:["等闲识得东风面", "万紫千红总是春"], author: "朱熹《春日》" },
+            { lines:["乱花渐欲迷人眼", "浅草才能没马蹄"], author: "白居易《钱塘湖春行》" },
+            { lines:["日出江花红胜火", "春来江水绿如蓝"], author: "白居易《忆江南》" },
+            { lines:["天街小雨润如酥", "草色遥看近却无"], author: "韩愈《早春呈水部张十八员外》" },
+            { lines:["不知细叶谁裁出", "二月春风似剪刀"], author: "贺知章《咏柳》" },
+            { lines:["千里莺啼绿映红", "水村山郭酒旗风"], author: "杜牧《江南春》" },
+            { lines:["春风又绿江南岸", "明月何时照我还"], author: "王安石《泊船瓜洲》" },
+            { lines:["小楼一夜听春雨", "深巷明朝卖杏花"], author: "陆游《临安春雨初霁》" },
+            { lines:["沉舟侧畔千帆过", "病树前头万木春"], author: "刘禹锡《酬乐天扬州初逢席上见赠》" },
+            { lines:["落红不是无情物", "化作春泥更护花"], author: "龚自珍《己亥杂诗》" },
+            { lines:["海内存知己", "天涯若比邻"], author: "王勃《送杜少府之任蜀州》" },
+            { lines:["采菊东篱下", "悠然见南山"], author: "陶渊明《饮酒》" },
+            { lines:["明月松间照", "清泉石上流"], author: "王维《山居秋暝》" },
+            { lines:["行到水穷处", "坐看云起时"], author: "王维《终南别业》" },
+            { lines:["大漠孤烟直", "长河落日圆"], author: "王维《使至塞上》" },
+            { lines:["会当凌绝顶", "一览众山小"], author: "杜甫《望岳》" },
+            { lines:["星垂平野阔", "月涌大江流"], author: "杜甫《旅夜书怀》" },
+            { lines:["两个黄鹂鸣翠柳", "一行白鹭上青天"], author: "杜甫《绝句》" },
+            { lines:["无边落木萧萧下", "不尽长江滚滚来"], author: "杜甫《登高》" },
+            { lines:["天生我材必有用", "千金散尽还复来"], author: "李白《将进酒》" },
+            { lines:["长风破浪会有时", "直挂云帆济沧海"], author: "李白《行路难》" },
+            { lines:["山重水复疑无路", "柳暗花明又一村"], author: "陆游《游山西村》" },
+            { lines:["问渠那得清如许", "为有源头活水来"], author: "朱熹《观书有感》" }
+        ];
+
+        // 根据日期获取古诗词（每天固定一首）
+        function getDailyPoetry() {
+            const today = new Date();
+            const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
+            const index = dayOfYear % poetryDatabase.length;
+            return poetryDatabase[index];
+        }
+
+        // 显示古诗词
+        function displayPoetry() {
+            const poetry = getDailyPoetry();
+            document.getElementById('poetryLine1').textContent = poetry.lines[0];
+            document.getElementById('poetryLine2').textContent = poetry.lines[1];
+            document.getElementById('poetryAuthor').textContent = '—— ' + poetry.author;
+        }
+
         // ===== 日历逻辑 =====
         const calendarGrid = document.getElementById('calendarGrid');
         const currentMonthEl = document.getElementById('currentMonth');
+        const yearMonthEl = document.getElementById('yearMonth');
+        const bigDayEl = document.getElementById('bigDay');
+        const weekdayNameEl = document.getElementById('weekdayName');
+        
         let currentDate = new Date();
         let selectedDate = new Date();
-        
-        // 农历数据简化版
+
+        const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         const lunarMonths = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
         const lunarDays = ['初一', '初二', '初三', '初四', '初五', '初六', '初七', '初八', '初九', '初十',
                           '十一', '十二', '十三', '十四', '十五', '十六', '十七', '十八', '十九', '二十',
                           '廿一', '廿二', '廿三', '廿四', '廿五', '廿六', '廿七', '廿八', '廿九', '三十'];
         const heavenlyStems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
         const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
-        
+
+        // 简化农历计算
         function getLunarDate(date) {
-            // 简化版农历计算（实际应用建议使用lunar-javascript库）
-            const baseDate = new Date(2026, 0, 29); // 2026年春节
+            // 使用近似算法计算农历
+            const baseDate = new Date(2026, 0, 29); // 2026年春节（正月初一）
             const diff = Math.floor((date - baseDate) / 86400000);
-            const month = 0; // 正月
-            const day = Math.max(0, diff + 3) % 30; // 简化计算
+            
+            if (diff < 0) {
+                // 春节前，简单处理
+                return '农历腊月';
+            }
+            
+            // 简化的农历月份计算（实际应用建议使用专业库）
+            let month = 0; // 正月开始
+            let day = diff;
+            
+            // 大致月份天数（简化）
+            const monthDays = [29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30];
+            
+            for (let i = 0; i < 12; i++) {
+                if (day < monthDays[i]) {
+                    month = i;
+                    break;
+                }
+                day -= monthDays[i];
+                if (i === 11) {
+                    month = 11;
+                }
+            }
+            
             return `农历${lunarMonths[month]}月${lunarDays[day] || '初一'}`;
         }
-        
+
         function getLunarYear(date) {
             const year = date.getFullYear();
             const stem = heavenlyStems[(year - 4) % 10];
             const branch = earthlyBranches[(year - 4) % 12];
             return `${stem}${branch}年`;
         }
-        
-        function updateLunarDate() {
+
+        function updateHeroDate() {
+            const year = selectedDate.getFullYear();
+            const month = selectedDate.getMonth() + 1;
+            const day = selectedDate.getDate();
+            const weekday = weekdays[selectedDate.getDay()];
+            
+            yearMonthEl.textContent = `${year}年 ${month}月`;
+            bigDayEl.textContent = day;
+            weekdayNameEl.textContent = weekday;
+            
             const lunarDate = getLunarDate(selectedDate);
             const lunarYear = getLunarYear(selectedDate);
             document.getElementById('lunarDate').textContent = `${lunarDate} · ${lunarYear}`;
+            
+            // 检查节日
+            const festival = checkFestival(month, day);
+            const festivalEl = document.getElementById('lunarFestival');
+            if (festival) {
+                festivalEl.textContent = festival;
+                festivalEl.style.display = 'block';
+            } else {
+                festivalEl.style.display = 'none';
+            }
         }
-        
+
+        function checkFestival(month, day) {
+            const festivals = {
+                '1-1': '元旦',
+                '2-14': '情人节',
+                '3-8': '妇女节',
+                '4-1': '愚人节',
+                '5-1': '劳动节',
+                '6-1': '儿童节',
+                '10-1': '国庆节',
+                '12-25': '圣诞节'
+            };
+            return festivals[`${month}-${day}`] || null;
+        }
+
         function renderCalendar() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
@@ -533,24 +734,23 @@
             }
             
             calendarGrid.innerHTML = html;
-            updateLunarDate();
+            updateHeroDate();
         }
-        
+
         function changeMonth(delta) {
             currentDate.setMonth(currentDate.getMonth() + delta);
             renderCalendar();
-            updateBackground();
         }
-        
+
         function selectDate(day) {
             selectedDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
             renderCalendar();
+            
+            // 保存到本地存储
+            localStorage.setItem('selectedDate', selectedDate.toISOString());
         }
-        
+
         // ===== 天气系统 =====
-        let currentTemp = null;
-        let currentWeatherCode = null;
-        
         async function getWeather() {
             const locationEl = document.getElementById('location');
             const tempEl = document.getElementById('temperature');
@@ -559,7 +759,6 @@
             const aqiEl = document.getElementById('aqi');
             
             try {
-                // 获取位置
                 const position = await new Promise((resolve, reject) => {
                     navigator.geolocation.getCurrentPosition(resolve, reject, {
                         timeout: 10000,
@@ -569,14 +768,12 @@
                 
                 const { latitude, longitude } = position.coords;
                 
-                // 使用Open-Meteo API（免费，无需Key）
                 const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&timezone=auto`);
                 const weatherData = await weatherRes.json();
                 
-                currentTemp = Math.round(weatherData.current.temperature_2m);
-                currentWeatherCode = weatherData.current.weather_code;
+                const temp = Math.round(weatherData.current.temperature_2m);
+                const weatherCode = weatherData.current.weather_code;
                 
-                // 获取城市名（使用反向地理编码）
                 try {
                     const geoRes = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=zh`);
                     const geoData = await geoRes.json();
@@ -585,23 +782,19 @@
                     locationEl.textContent = '当前位置';
                 }
                 
-                // 更新天气显示
-                tempEl.textContent = `${currentTemp}°`;
-                const weatherInfo = getWeatherInfo(currentWeatherCode);
+                tempEl.textContent = `${temp}°`;
+                const weatherInfo = getWeatherInfo(weatherCode);
                 descEl.textContent = weatherInfo.desc;
                 iconEl.textContent = weatherInfo.icon;
                 
-                // 模拟AQI（实际应用需要单独API）
-                const aqi = Math.floor(Math.random() * 50) + 20; // 模拟良好范围
+                const aqi = Math.floor(Math.random() * 50) + 20;
                 aqiEl.textContent = `AQI ${aqi}`;
-                aqiEl.style.background = aqi <= 50 ? 'rgba(16, 185, 129, 0.2)' : 'rgba(245, 158, 11, 0.2)';
+                aqiEl.style.background = aqi <= 50 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(245, 158, 11, 0.15)';
                 aqiEl.style.color = aqi <= 50 ? '#34d399' : '#fbbf24';
                 
-                // 更新穿衣建议
-                updateClothingAdvice(currentTemp, currentWeatherCode);
+                updateClothingAdvice(temp, weatherCode);
                 
             } catch (error) {
-                console.error('天气获取失败:', error);
                 locationEl.textContent = '北京';
                 tempEl.textContent = '5°';
                 descEl.textContent = '多云';
@@ -610,7 +803,7 @@
                 updateClothingAdvice(5, 3);
             }
         }
-        
+
         function getWeatherInfo(code) {
             const weatherMap = {
                 0: { desc: '晴朗', icon: '☀️' },
@@ -637,8 +830,7 @@
             };
             return weatherMap[code] || { desc: '多云', icon: '☁️' };
         }
-        
-        // ===== 穿衣建议系统 =====
+
         function updateClothingAdvice(temp, weatherCode) {
             const adviceEl = document.getElementById('clothingAdvice');
             const iconsEl = document.getElementById('clothingIcons');
@@ -646,7 +838,6 @@
             let advice = '';
             let icons = '';
             
-            // 基于温度的建议
             if (temp < 5) {
                 advice = '寒冷，建议着羽绒服、厚呢大衣，佩戴围巾手套';
                 icons = '🧥🧣🧤';
@@ -664,7 +855,6 @@
                 icons = '🩳🧴';
             }
             
-            // 基于天气的附加建议
             const isRainy = [51, 53, 55, 61, 63, 65, 80, 81, 82].includes(weatherCode);
             const isSnowy = [71, 73, 75].includes(weatherCode);
             const isFoggy = [45, 48].includes(weatherCode);
@@ -683,54 +873,44 @@
             adviceEl.textContent = advice;
             iconsEl.textContent = icons;
         }
-        
+
         // ===== 背景图片系统 =====
-        const bgImage = document.getElementById('bgImage');
-        const loadingText = document.getElementById('loadingText');
-        
         function updateBackground() {
-            // 使用 Unsplash Source API
             const keywords = 'architecture,minimal,concrete,building,modern';
             const timestamp = new Date().getTime();
             const imageUrl = `https://source.unsplash.com/1920x1080/?${keywords}&sig=${timestamp}`;
             
             const img = new Image();
             img.onload = function() {
-                bgImage.style.backgroundImage = `url(${imageUrl})`;
-                bgImage.classList.add('active');
-                loadingText.classList.add('hidden');
+                document.getElementById('bgImage').style.backgroundImage = `url(${imageUrl})`;
+                document.getElementById('bgImage').classList.add('active');
+                document.getElementById('loadingText').classList.add('hidden');
             };
             img.onerror = function() {
-                // 备用图片源
-                bgImage.style.backgroundImage = `url(https://picsum.photos/1920/1080?random=${timestamp})`;
-                bgImage.classList.add('active');
-                loadingText.classList.add('hidden');
+                document.getElementById('bgImage').style.backgroundImage = `url(https://picsum.photos/1920/1080?random=${timestamp})`;
+                document.getElementById('bgImage').classList.add('active');
+                document.getElementById('loadingText').classList.add('hidden');
             };
             img.src = imageUrl;
         }
-        
+
         // ===== 初始化 =====
         document.addEventListener('DOMContentLoaded', function() {
+            // 检查本地存储的选中日期
+            const savedDate = localStorage.getItem('selectedDate');
+            if (savedDate) {
+                selectedDate = new Date(savedDate);
+                currentDate = new Date(selectedDate);
+            }
+            
             renderCalendar();
             updateBackground();
             getWeather();
+            displayPoetry();
             
-            // 每分钟更新一次
             setInterval(() => {
                 getWeather();
             }, 60000);
-            
-            // 本地存储：记住上次查看的月份
-            const savedMonth = localStorage.getItem('calendarMonth');
-            if (savedMonth) {
-                currentDate = new Date(savedMonth);
-                renderCalendar();
-            }
-        });
-        
-        // 页面卸载前保存状态
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('calendarMonth', currentDate.toISOString());
         });
     </script>
 </body>
