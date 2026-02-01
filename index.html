@@ -89,15 +89,15 @@
         
         /* 玻璃拟态卡片 */
         .glass-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 32px;
-            box-shadow: 0 25px 80px -20px rgba(0, 0, 0, 0.4);
+            background: rgba(30, 30, 35, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.5);
             overflow: hidden;
             width: 100%;
-            max-width: 1100px;
+            max-width: 900px;
             animation: cardFloat 1.2s ease-out;
         }
         
@@ -114,91 +114,92 @@
         
         /* ===== 突出显示的日期区域 ===== */
         .hero-date-section {
-            padding: 3rem 2rem 2rem;
+            padding: 1.5rem 1.5rem 1rem;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
         }
         
         .year-month {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.5);
-            letter-spacing: 0.3em;
-            margin-bottom: 0.5rem;
-            font-weight: 300;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.3rem;
+            font-weight: 400;
         }
         
         /* 大日期显示 */
         .big-day {
-            font-size: clamp(6rem, 20vw, 12rem);
+            font-size: clamp(4rem, 15vw, 8rem);
             font-weight: 700;
-            color: rgba(255, 255, 255, 0.95);
+            color: #ffffff;
             line-height: 1;
-            margin: 0.5rem 0;
-            text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+            margin: 0.2rem 0;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.4);
             font-family: 'Noto Serif SC', serif;
             letter-spacing: 0.05em;
         }
         
         .weekday-name {
-            font-size: 1.5rem;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.5em;
-            margin-top: 0.5rem;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.85);
+            letter-spacing: 0.3em;
+            margin-top: 0.3rem;
         }
         
         /* 农历日期 */
         .lunar-info {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
+            margin-top: 0.8rem;
+            padding-top: 0.8rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .lunar-date {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.6);
-            letter-spacing: 0.15em;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            letter-spacing: 0.1em;
         }
         
         .lunar-festival {
-            font-size: 0.85rem;
-            color: #d97706;
-            margin-top: 0.3rem;
-            letter-spacing: 0.1em;
+            font-size: 0.8rem;
+            color: #f59e0b;
+            margin-top: 0.2rem;
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
         
         /* ===== 古诗词区域 ===== */
         .poetry-section {
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.2);
             text-align: center;
         }
         
         .poetry-content {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
         }
         
         .poetry-quote {
-            font-size: 1.4rem;
-            color: rgba(255, 255, 255, 0.9);
-            line-height: 2;
-            letter-spacing: 0.1em;
+            font-size: 1.1rem;
+            color: #ffffff;
+            line-height: 1.8;
+            letter-spacing: 0.08em;
             font-weight: 400;
         }
         
         .poetry-author {
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 1rem;
-            letter-spacing: 0.2em;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.6rem;
+            letter-spacing: 0.1em;
         }
         
         .poetry-divider {
-            width: 40px;
+            width: 30px;
             height: 1px;
-            background: rgba(217, 119, 6, 0.5);
-            margin: 1.5rem auto;
+            background: rgba(217, 119, 6, 0.6);
+            margin: 0.8rem auto;
         }
         
         /* ===== 主体内容区域 ===== */
@@ -216,7 +217,7 @@
         
         /* 日历网格区域 */
         .calendar-section {
-            padding: 2rem;
+            padding: 1.2rem;
             border-right: 1px solid rgba(255, 255, 255, 0.1);
         }
         
@@ -231,48 +232,47 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         
         .current-month {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
-            letter-spacing: 0.1em;
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.05em;
+            font-weight: 500;
         }
         
         .nav-btn {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: rgba(255, 255, 255, 0.7);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
         
         .nav-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.2);
         }
         
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 0.6rem;
+            gap: 0.3rem;
         }
         
         .weekday {
             text-align: center;
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.35);
-            padding: 0.6rem 0;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 0.4rem 0;
             font-weight: 500;
-            letter-spacing: 0.05em;
         }
         
         .calendar-day {
@@ -280,176 +280,170 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.9);
             cursor: pointer;
-            border-radius: 12px;
-            transition: all 0.3s;
+            border-radius: 6px;
+            transition: all 0.2s;
             position: relative;
         }
         
         .calendar-day:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
         }
         
         .calendar-day.other-month {
-            color: rgba(255, 255, 255, 0.25);
+            color: rgba(255, 255, 255, 0.35);
         }
         
         .calendar-day.today {
-            background: rgba(217, 119, 6, 0.3);
-            border: 1px solid rgba(217, 119, 6, 0.5);
+            background: #d97706;
             font-weight: 600;
             color: #fff;
         }
         
         .calendar-day.selected {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
         }
         
         /* 信息面板 */
         .info-panel {
-            padding: 2rem;
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
         }
         
         /* 天气模块 */
         .weather-module {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            padding: 1.5rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
         
         .weather-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1rem;
+            margin-bottom: 0.8rem;
         }
         
         .location {
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
         }
         
         .aqi-badge {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.7rem;
-            background: rgba(16, 185, 129, 0.15);
+            font-size: 0.65rem;
+            padding: 0.2rem 0.5rem;
+            background: rgba(16, 185, 129, 0.2);
             color: #34d399;
-            border-radius: 20px;
+            border-radius: 12px;
         }
         
         .weather-main {
             display: flex;
             align-items: center;
-            gap: 1.2rem;
+            gap: 0.8rem;
         }
         
         .weather-icon {
-            font-size: 3.5rem;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2));
+            font-size: 2.5rem;
         }
         
         .temperature {
-            font-size: 3.2rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.95);
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #ffffff;
             line-height: 1;
             font-family: 'Inter', sans-serif;
         }
         
         .weather-desc {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.5);
-            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
         }
         
         /* 穿衣建议模块 */
         .clothing-module {
-            background: linear-gradient(135deg, rgba(217, 119, 6, 0.15), rgba(217, 119, 6, 0.05));
+            background: rgba(217, 119, 6, 0.15);
             border: 1px solid rgba(217, 119, 6, 0.3);
-            border-radius: 16px;
-            padding: 1.5rem;
+            border-radius: 12px;
+            padding: 1rem;
         }
         
         .clothing-title {
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.4);
-            letter-spacing: 0.15em;
-            margin-bottom: 0.75rem;
-            text-transform: uppercase;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
         }
         
         .clothing-advice {
-            font-size: 1.05rem;
-            line-height: 1.8;
-            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #ffffff;
         }
         
         .clothing-icons {
-            margin-top: 1rem;
-            font-size: 1.8rem;
-            letter-spacing: 0.8rem;
+            margin-top: 0.6rem;
+            font-size: 1.4rem;
+            letter-spacing: 0.5rem;
         }
         
         /* 页脚 */
         .footer {
-            padding: 1.8rem 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             text-align: center;
         }
         
         .footer-text {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.35);
-            letter-spacing: 0.15em;
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.1em;
         }
         
         /* 响应式调整 */
         @media (max-width: 768px) {
             .main-container {
-                padding: 0.8rem;
+                padding: 0.5rem;
             }
             
             .glass-card {
-                border-radius: 24px;
+                border-radius: 16px;
             }
             
             .hero-date-section {
-                padding: 2rem 1.5rem 1.5rem;
+                padding: 1.2rem 1rem 0.8rem;
             }
             
             .big-day {
-                font-size: clamp(5rem, 18vw, 8rem);
+                font-size: clamp(3.5rem, 14vw, 6rem);
             }
             
             .weekday-name {
-                font-size: 1.2rem;
-                letter-spacing: 0.3em;
+                font-size: 1rem;
+                letter-spacing: 0.2em;
             }
             
             .poetry-section {
-                padding: 1.5rem;
+                padding: 0.8rem 1rem;
             }
             
             .poetry-quote {
-                font-size: 1.15rem;
+                font-size: 1rem;
             }
             
             .calendar-section,
             .info-panel {
-                padding: 1.5rem;
+                padding: 1rem;
             }
             
             .temperature {
-                font-size: 2.8rem;
+                font-size: 2rem;
             }
         }
     </style>
