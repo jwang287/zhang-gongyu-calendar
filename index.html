@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>张公羽的个人日历</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@300;400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,7 +48,7 @@
             66% { transform: translate(-1%, 1%) rotate(-1deg); }
         }
         
-        /* ===== 密码验证层 ===== */
+        /* ===== 密码层 ===== */
         .password-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -70,29 +74,13 @@
             border: 3px solid rgba(255, 182, 193, 0.5);
         }
         
-        .password-title {
-            font-size: 1.5rem;
-            color: #ff69b4;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
+        .password-title { font-size: 1.5rem; color: #ff69b4; font-weight: 700; margin-bottom: 0.5rem; }
+        .password-subtitle { font-size: 0.85rem; color: #9370db; margin-bottom: 1.5rem; }
         
-        .password-subtitle {
-            font-size: 0.85rem;
-            color: #9370db;
-            margin-bottom: 1.5rem;
-        }
-        
-        .password-input-wrapper {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
+        .password-input-wrapper { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem; }
         
         .password-dot {
-            width: 50px;
-            height: 55px;
+            width: 50px; height: 55px;
             border: 2px solid rgba(255, 182, 193, 0.5);
             border-radius: 12px;
             font-size: 1.5rem;
@@ -104,37 +92,30 @@
             transition: all 0.2s;
         }
         
-        .password-dot:focus {
-            outline: none;
-            border-color: #ff69b4;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+        .password-dot:focus { outline: none; border-color: #ff69b4; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 105, 180, 0.3); }
+        .password-dot.filled { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; border-color: #ff69b4; }
+        
+        .password-error { color: #ff4757; font-size: 0.8rem; margin-top: 0.5rem; min-height: 1.2rem; }
+        .password-lock { font-size: 3rem; margin-bottom: 1rem; }
+        .lock-timer { color: #ff69b4; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; }
+        
+        /* ===== 加载层 ===== */
+        .loading-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
         }
         
-        .password-dot.filled {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%);
-            color: white;
-            border-color: #ff69b4;
-        }
-        
-        .password-error {
-            color: #ff4757;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            min-height: 1.2rem;
-        }
-        
-        .password-lock {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-        
-        .lock-timer {
-            color: #ff69b4;
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-        }
+        .loading-overlay.show { display: flex; }
+        .loading-spinner { font-size: 3rem; animation: spin 1s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .loading-text { margin-top: 1rem; color: #ff69b4; font-weight: 600; }
         
         /* ===== 主容器 ===== */
         .main-container {
@@ -160,10 +141,7 @@
             animation: cardFloat 1s ease-out;
         }
         
-        @keyframes cardFloat {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes cardFloat { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         
         /* ===== 提醒横幅 ===== */
         .alert-banner {
@@ -176,19 +154,9 @@
             display: none;
             animation: bannerPulse 2s ease-in-out infinite;
         }
-        
         .alert-banner.show { display: block; }
-        
-        @keyframes bannerPulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.85; }
-        }
-        
-        .alert-banner .close-btn {
-            float: right;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+        @keyframes bannerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+        .alert-banner .close-btn { float: right; cursor: pointer; margin-left: 10px; }
         
         /* ===== 顶部日期区 ===== */
         .hero-date-section {
@@ -219,10 +187,7 @@
             color: white;
         }
         
-        @keyframes badgeBounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-3px); }
-        }
+        @keyframes badgeBounce { from { transform: translateY(0); } to { transform: translateY(-3px); } }
         
         .year-month { font-size: 0.9rem; color: #ff69b4; letter-spacing: 0.2em; margin-bottom: 0.3rem; font-weight: 600; }
         
@@ -257,7 +222,6 @@
             color: #0984e3;
             display: none;
         }
-        
         .workday-notice.show { display: block; }
         
         /* ===== 诗词区 ===== */
@@ -268,12 +232,7 @@
             position: relative;
         }
         
-        .poetry-section::before, .poetry-section::after {
-            content: '✨';
-            position: absolute;
-            font-size: 1.2rem;
-            opacity: 0.6;
-        }
+        .poetry-section::before, .poetry-section::after { content: '✨'; position: absolute; font-size: 1.2rem; opacity: 0.6; }
         .poetry-section::before { left: 15px; top: 50%; transform: translateY(-50%); }
         .poetry-section::after { right: 15px; top: 50%; transform: translateY(-50%); }
         
@@ -282,20 +241,11 @@
         .poetry-divider { width: 40px; height: 3px; background: linear-gradient(90deg, #ffb6c1, #dda0dd); border-radius: 2px; margin: 0.5rem auto; }
         
         /* ===== 主体内容 ===== */
-        .content-body {
-            display: grid;
-            grid-template-columns: 1.4fr 1fr;
-            min-height: auto;
-        }
-        
+        .content-body { display: grid; grid-template-columns: 1.4fr 1fr; min-height: auto; }
         @media (max-width: 900px) { .content-body { grid-template-columns: 1fr; } }
         
         /* 日历区 */
-        .calendar-section {
-            padding: 1rem;
-            border-right: 2px dashed rgba(255, 182, 193, 0.3);
-        }
-        
+        .calendar-section { padding: 1rem; border-right: 2px dashed rgba(255, 182, 193, 0.3); }
         @media (max-width: 900px) { .calendar-section { border-right: none; border-bottom: 2px dashed rgba(255, 182, 193, 0.3); } }
         
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
@@ -305,8 +255,7 @@
             background: linear-gradient(135deg, #ffb6c1 0%, #dda0dd 100%);
             border: none;
             color: #fff;
-            width: 32px;
-            height: 32px;
+            width: 32px; height: 32px;
             border-radius: 50%;
             cursor: pointer;
             font-size: 1rem;
@@ -318,13 +267,7 @@
         
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
         
-        .weekday {
-            text-align: center;
-            font-size: 0.75rem;
-            color: #9370db;
-            padding: 0.35rem 0;
-            font-weight: 700;
-        }
+        .weekday { text-align: center; font-size: 0.75rem; color: #9370db; padding: 0.35rem 0; font-weight: 700; }
         
         .calendar-day {
             aspect-ratio: 1;
@@ -341,17 +284,8 @@
             min-height: 50px;
         }
         
-        .calendar-day .day-num { 
-            font-size: 0.9rem; 
-            color: #6b5b95;
-        }
-        
-        .calendar-day .day-lunar { 
-            font-size: 0.55rem; 
-            color: #999; 
-            margin-top: 1px;
-        }
-        
+        .calendar-day .day-num { font-size: 0.9rem; color: #6b5b95; }
+        .calendar-day .day-lunar { font-size: 0.55rem; color: #999; margin-top: 1px; }
         .calendar-day .day-keyword {
             font-size: 0.5rem;
             color: #ff69b4;
@@ -365,65 +299,23 @@
             padding: 0 3px;
             border-radius: 3px;
         }
-        
-        .calendar-day .day-dot {
-            width: 4px; height: 4px;
-            border-radius: 50%;
-            background: #ff69b4;
-            position: absolute;
-            bottom: 3px;
-        }
-        
-        .calendar-day .day-holiday-icon {
-            font-size: 0.6rem;
-            position: absolute;
-            top: 1px;
-            right: 2px;
-        }
+        .calendar-day .day-holiday-icon { font-size: 0.6rem; position: absolute; top: 1px; right: 2px; }
         
         .calendar-day:hover { background: rgba(255, 182, 193, 0.3); transform: scale(1.05); }
         .calendar-day.other-month { opacity: 0.4; }
         .calendar-day.other-month .day-num { color: rgba(107, 91, 149, 0.5); }
-        .calendar-day.other-month .day-lunar { color: rgba(107, 91, 149, 0.3); }
-        
-        .calendar-day.today {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%);
-            box-shadow: 0 3px 10px rgba(255, 105, 180, 0.4);
-        }
+        .calendar-day.today { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); box-shadow: 0 3px 10px rgba(255, 105, 180, 0.4); }
         .calendar-day.today .day-num { color: #fff; }
         .calendar-day.today .day-lunar { color: rgba(255,255,255,0.8); }
         .calendar-day.today .day-keyword { background: rgba(255,255,255,0.3); color: #fff; }
-        
-        .calendar-day.selected {
-            background: rgba(221, 160, 221, 0.4);
-            border: 2px solid #dda0dd;
-        }
-        
-        .calendar-day.public-holiday {
-            background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(221, 160, 221, 0.3) 100%);
-        }
-        .calendar-day.public-holiday .day-num {
-            color: #ff1493;
-        }
-        
-        .calendar-day.workday-adjust {
-            background: rgba(116, 185, 255, 0.15);
-            border: 1px dashed #0984e3;
-        }
-        .calendar-day.workday-adjust .day-num {
-            color: #0984e3;
-        }
+        .calendar-day.selected { background: rgba(221, 160, 221, 0.4); border: 2px solid #dda0dd; }
+        .calendar-day.public-holiday { background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(221, 160, 221, 0.3) 100%); }
+        .calendar-day.public-holiday .day-num { color: #ff1493; }
+        .calendar-day.workday-adjust { background: rgba(116, 185, 255, 0.15); border: 1px dashed #0984e3; }
+        .calendar-day.workday-adjust .day-num { color: #0984e3; }
         
         /* 信息面板 */
-        .info-panel {
-            padding: 0.8rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            max-height: 520px;
-            overflow-y: auto;
-        }
-        
+        .info-panel { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 520px; overflow-y: auto; }
         .info-panel::-webkit-scrollbar { width: 4px; }
         .info-panel::-webkit-scrollbar-thumb { background: rgba(255, 182, 193, 0.5); border-radius: 2px; }
         
@@ -435,27 +327,12 @@
             border: 2px solid rgba(255, 182, 193, 0.3);
             box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
         }
-        
         .weather-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
         .location { font-size: 0.75rem; color: #9370db; font-weight: 600; }
-        .aqi-badge {
-            font-size: 0.65rem;
-            padding: 0.2rem 0.5rem;
-            background: linear-gradient(135deg, #98fb98 0%, #90ee90 100%);
-            color: #2e8b57;
-            border-radius: 12px;
-            font-weight: 700;
-        }
+        .aqi-badge { font-size: 0.65rem; padding: 0.2rem 0.5rem; background: linear-gradient(135deg, #98fb98 0%, #90ee90 100%); color: #2e8b57; border-radius: 12px; font-weight: 700; }
         .weather-main { display: flex; align-items: center; gap: 0.8rem; }
         .weather-icon { font-size: 2.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-        .temperature {
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-family: 'Nunito', sans-serif;
-        }
+        .temperature { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Nunito', sans-serif; }
         .weather-desc { font-size: 0.85rem; color: #6b5b95; font-weight: 500; }
         
         /* 穿搭模块 */
@@ -478,215 +355,68 @@
             border: 2px solid rgba(255, 182, 193, 0.4);
             box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
         }
-        
         .holiday-title { font-size: 0.75rem; color: #ff69b4; margin-bottom: 0.5rem; font-weight: 700; }
-        
-        .holiday-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 0;
-            border-bottom: 1px dashed rgba(255, 182, 193, 0.3);
-            font-size: 0.8rem;
-        }
+        .holiday-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px dashed rgba(255, 182, 193, 0.3); font-size: 0.8rem; }
         .holiday-item:last-child { border-bottom: none; }
-        
         .holiday-icon { font-size: 1rem; }
         .holiday-text { color: #6b5b95; flex: 1; }
-        .holiday-tag {
-            font-size: 0.6rem;
-            padding: 0.1rem 0.4rem;
-            border-radius: 6px;
-            font-weight: 600;
-        }
+        .holiday-tag { font-size: 0.6rem; padding: 0.1rem 0.4rem; border-radius: 6px; font-weight: 600; }
         .tag-rest { background: #ffe4f0; color: #ff1493; }
         .tag-work { background: #e3f2fd; color: #0984e3; }
         
-        /* 页脚 */
-        .footer {
-            padding: 0.8rem;
-            border-top: 2px dashed rgba(255, 182, 193, 0.3);
-            text-align: center;
-            background: linear-gradient(180deg, transparent 0%, rgba(255, 240, 245, 0.5) 100%);
+        /* 云端同步状态 */
+        .sync-status {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
         }
+        .sync-status.online { background: #d4edda; color: #155724; }
+        .sync-status.offline { background: #f8d7da; color: #721c24; }
+        .sync-status.syncing { background: #fff3cd; color: #856404; }
+        
+        /* 页脚 */
+        .footer { padding: 0.8rem; border-top: 2px dashed rgba(255, 182, 193, 0.3); text-align: center; background: linear-gradient(180deg, transparent 0%, rgba(255, 240, 245, 0.5) 100%); }
         .footer-text { font-size: 0.75rem; color: #ff8c69; font-weight: 600; }
         
         /* ===== 弹窗 ===== */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
         .modal-overlay.show { display: flex; }
         
-        .modal {
-            background: white;
-            border-radius: 20px;
-            padding: 1.5rem;
-            width: 90%;
-            max-width: 420px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            animation: modalPop 0.3s ease;
-        }
+        .modal { background: white; border-radius: 20px; padding: 1.5rem; width: 90%; max-width: 420px; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: modalPop 0.3s ease; }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
-        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .modal-title { font-size: 1.1rem; color: #ff69b4; font-weight: 700; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: #999; cursor: pointer; }
+        .modal-date { font-size: 0.85rem; color: #9370db; margin-bottom: 1rem; padding: 0.5rem; background: rgba(255, 240, 245, 0.5); border-radius: 8px; text-align: center; }
         
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
+        .form-group { margin-bottom: 1rem; }
+        .form-label { display: block; font-size: 0.8rem; color: #6b5b95; margin-bottom: 0.3rem; font-weight: 600; }
+        .form-input, .form-textarea { width: 100%; padding: 0.7rem; border: 2px solid rgba(255, 182, 193, 0.3); border-radius: 10px; font-size: 0.9rem; font-family: inherit; transition: all 0.2s; }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: #ff69b4; }
+        .form-textarea { min-height: 80px; resize: vertical; }
         
-        .modal-title {
-            font-size: 1.1rem;
-            color: #ff69b4;
-            font-weight: 700;
-        }
+        .reminder-type-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .reminder-type-btn { padding: 0.4rem 0.8rem; border: 2px solid rgba(255, 182, 193, 0.3); border-radius: 15px; font-size: 0.75rem; cursor: pointer; background: white; color: #6b5b95; transition: all 0.2s; }
+        .reminder-type-btn.selected { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; border-color: #ff69b4; }
         
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: #999;
-            cursor: pointer;
-        }
-        
-        .modal-date {
-            font-size: 0.85rem;
-            color: #9370db;
-            margin-bottom: 1rem;
-            padding: 0.5rem;
-            background: rgba(255, 240, 245, 0.5);
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 0.8rem;
-            color: #6b5b95;
-            margin-bottom: 0.3rem;
-            font-weight: 600;
-        }
-        
-        .form-input, .form-textarea {
-            width: 100%;
-            padding: 0.7rem;
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-        
-        .form-input:focus, .form-textarea:focus {
-            outline: none;
-            border-color: #ff69b4;
-        }
-        
-        .form-textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .reminder-type-selector {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-        
-        .reminder-type-btn {
-            padding: 0.4rem 0.8rem;
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            border-radius: 15px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            background: white;
-            color: #6b5b95;
-            transition: all 0.2s;
-        }
-        
-        .reminder-type-btn.selected {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%);
-            color: white;
-            border-color: #ff69b4;
-        }
-        
-        .modal-buttons {
-            display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .modal-btn {
-            flex: 1;
-            padding: 0.8rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .modal-btn-primary {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%);
-            color: white;
-        }
-        
-        .modal-btn-secondary {
-            background: #f0f0f0;
-            color: #666;
-        }
-        
-        .modal-btn-danger {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-            color: white;
-        }
-        
+        .modal-buttons { display: flex; gap: 0.5rem; margin-top: 1rem; }
+        .modal-btn { flex: 1; padding: 0.8rem; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+        .modal-btn-primary { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; }
+        .modal-btn-secondary { background: #f0f0f0; color: #666; }
+        .modal-btn-danger { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; }
         .modal-btn:hover { transform: translateY(-2px); }
         
-        .saved-note-display {
-            background: rgba(255, 240, 245, 0.5);
-            padding: 0.8rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-        }
+        .saved-note-display { background: rgba(255, 240, 245, 0.5); padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; }
+        .saved-note-text { color: #6b5b95; font-size: 0.9rem; line-height: 1.5; }
+        .saved-note-keyword { display: inline-block; background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%); color: white; padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; }
         
-        .saved-note-text {
-            color: #6b5b95;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .saved-note-keyword {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%);
-            color: white;
-            padding: 0.2rem 0.6rem;
-            border-radius: 10px;
-            font-size: 0.75rem;
-            margin-top: 0.5rem;
-            font-weight: 600;
-        }
-        
-        /* 响应式 */
         @media (max-width: 768px) {
             .main-container { padding: 0.3rem; }
             .glass-card { border-radius: 12px; }
@@ -718,6 +448,12 @@
         </div>
     </div>
 
+    <!-- 加载层 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">☁️</div>
+        <div class="loading-text">正在同步云端数据...</div>
+    </div>
+
     <div class="bg-container"></div>
     
     <!-- 提醒横幅 -->
@@ -733,6 +469,12 @@
     
     <div class="main-container">
         <div class="glass-card">
+            <!-- 同步状态 -->
+            <div class="sync-status offline" id="syncStatus">
+                <span>☁️</span>
+                <span>离线</span>
+            </div>
+
             <!-- 顶部日期 -->
             <section class="hero-date-section">
                 <div class="holiday-badge" id="holidayBadge" style="display:none">🎊 节日</div>
@@ -798,7 +540,7 @@
                         <div id="holidayList">
                             <div class="holiday-item">
                                 <span class="holiday-icon">📅</span>
-                                <span class="holiday-text">本月暂无假期</span>
+                                <span class="holiday-text">加载中...</span>
                             </div>
                         </div>
                     </div>
@@ -854,23 +596,47 @@
     </div>
 
     <script>
+        // ===== Firebase 配置 =====
+        // 请替换为你自己的 Firebase 配置
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "your-project.firebaseapp.com",
+            projectId: "your-project",
+            storageBucket: "your-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+        
+        // 初始化 Firebase（如果配置了有效密钥）
+        let db = null;
+        let isOnline = false;
+        
+        try {
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                isOnline = true;
+            }
+        } catch (e) {
+            console.log('Firebase 未配置，使用本地存储');
+        }
+        
         // ===== 密码验证系统 =====
         const CORRECT_PASSWORD = '0629';
-        const PASSWORD_KEY = 'calendar_auth_' + navigator.userAgent.slice(0, 50); // 设备标识
+        const PASSWORD_KEY = 'calendar_auth_' + navigator.userAgent.slice(0, 50);
         
         let passwordAttempts = 0;
         let lockEndTime = 0;
         let currentPassword = '';
         
         function initPassword() {
-            // 检查是否已验证
             const authData = JSON.parse(localStorage.getItem(PASSWORD_KEY) || '{}');
             if (authData.verified && authData.expires > Date.now()) {
                 hidePasswordOverlay();
+                initApp();
                 return;
             }
             
-            // 检查锁定状态
             const lockData = JSON.parse(localStorage.getItem('password_lock') || '{}');
             if (lockData.endTime && lockData.endTime > Date.now()) {
                 startLockTimer(lockData.endTime - Date.now());
@@ -902,12 +668,9 @@
                     }
                 });
                 
-                input.addEventListener('focus', () => {
-                    input.select();
-                });
+                input.addEventListener('focus', () => input.select());
             });
             
-            // 第一个自动聚焦
             setTimeout(() => inputs[0].focus(), 100);
         }
         
@@ -915,23 +678,20 @@
             const errorEl = document.getElementById('passwordError');
             
             if (currentPassword === CORRECT_PASSWORD) {
-                // 验证成功
                 localStorage.setItem(PASSWORD_KEY, JSON.stringify({
                     verified: true,
-                    expires: Date.now() + 30 * 24 * 60 * 60 * 1000 // 30天有效期
+                    expires: Date.now() + 30 * 24 * 60 * 60 * 1000
                 }));
                 
-                // 清除错误计数
                 localStorage.removeItem('password_attempts');
                 localStorage.removeItem('password_lock');
                 
                 hidePasswordOverlay();
+                initApp();
             } else {
-                // 验证失败
                 passwordAttempts++;
                 localStorage.setItem('password_attempts', passwordAttempts);
                 
-                // 清空输入
                 const inputs = document.querySelectorAll('.password-dot');
                 inputs.forEach(input => {
                     input.value = '';
@@ -940,12 +700,11 @@
                 currentPassword = '';
                 inputs[0].focus();
                 
-                // 检查锁定
                 if (passwordAttempts >= 6) {
-                    lockSystem(10 * 60 * 1000); // 10分钟
+                    lockSystem(10 * 60 * 1000);
                     errorEl.textContent = '❌ 密码错误次数过多，系统已锁定10分钟';
                 } else if (passwordAttempts >= 3) {
-                    lockSystem(30 * 1000); // 30秒
+                    lockSystem(30 * 1000);
                     errorEl.textContent = '❌ 密码错误3次，系统已锁定30秒';
                 } else {
                     errorEl.textContent = `❌ 密码错误，还有 ${3 - passwordAttempts % 3} 次机会`;
@@ -975,7 +734,6 @@
             const updateTimer = () => {
                 const remaining = lockEndTime - Date.now();
                 if (remaining <= 0) {
-                    // 解锁
                     timerEl.textContent = '';
                     wrapper.style.display = 'flex';
                     icon.textContent = '🔒';
@@ -988,12 +746,7 @@
                 const minutes = Math.floor(seconds / 60);
                 const secs = seconds % 60;
                 
-                if (minutes > 0) {
-                    timerEl.textContent = `⏱️ ${minutes}分${secs}秒后解锁`;
-                } else {
-                    timerEl.textContent = `⏱️ ${secs}秒后解锁`;
-                }
-                
+                timerEl.textContent = minutes > 0 ? `⏱️ ${minutes}分${secs}秒后解锁` : `⏱️ ${secs}秒后解锁`;
                 requestAnimationFrame(updateTimer);
             };
             
@@ -1004,138 +757,259 @@
             document.getElementById('passwordOverlay').classList.add('hidden');
         }
         
-        // ===== 2025-2026年中国假期及调休数据 =====
-        const chinaHolidays2025 = {
-            // 元旦
-            '2025-1-1': { name: '元旦', type: 'public', rest: true },
+        // ===== 国务院假期数据（2024-2026）=====
+        // 数据来源：国务院办公厅关于2024、2025年部分节假日安排的通知
+        const officialHolidays = {
+            // 2024年假期安排
+            2024: {
+                '2024-1-1': { name: '元旦', type: 'holiday', rest: true },
+                '2024-2-9': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-10': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-11': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-12': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-13': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-14': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-15': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-16': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-17': { name: '春节', type: 'holiday', rest: true },
+                '2024-2-4': { name: '调休上班', type: 'workday', rest: false },
+                '2024-2-18': { name: '调休上班', type: 'workday', rest: false },
+                
+                '2024-4-4': { name: '清明节', type: 'holiday', rest: true },
+                '2024-4-5': { name: '清明节', type: 'holiday', rest: true },
+                '2024-4-6': { name: '清明节', type: 'holiday', rest: true },
+                
+                '2024-5-1': { name: '劳动节', type: 'holiday', rest: true },
+                '2024-5-2': { name: '劳动节', type: 'holiday', rest: true },
+                '2024-5-3': { name: '劳动节', type: 'holiday', rest: true },
+                '2024-5-4': { name: '劳动节', type: 'holiday', rest: true },
+                '2024-5-5': { name: '劳动节', type: 'holiday', rest: true },
+                '2024-4-28': { name: '调休上班', type: 'workday', rest: false },
+                '2024-5-11': { name: '调休上班', type: 'workday', rest: false },
+                
+                '2024-6-10': { name: '端午节', type: 'holiday', rest: true },
+                
+                '2024-9-15': { name: '中秋节', type: 'holiday', rest: true },
+                '2024-9-16': { name: '中秋节', type: 'holiday', rest: true },
+                '2024-9-17': { name: '中秋节', type: 'holiday', rest: true },
+                '2024-9-14': { name: '调休上班', type: 'workday', rest: false },
+                
+                '2024-10-1': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-2': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-3': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-4': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-5': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-6': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-10-7': { name: '国庆节', type: 'holiday', rest: true },
+                '2024-9-29': { name: '调休上班', type: 'workday', rest: false },
+                '2024-10-12': { name: '调休上班', type: 'workday', rest: false }
+            },
             
-            // 春节（1.28-2.4放假，2.8调休上班）
-            '2025-1-28': { name: '春节', type: 'public', rest: true },
-            '2025-1-29': { name: '春节', type: 'public', rest: true },
-            '2025-1-30': { name: '春节', type: 'public', rest: true },
-            '2025-1-31': { name: '春节', type: 'public', rest: true },
-            '2025-2-1': { name: '春节', type: 'public', rest: true },
-            '2025-2-2': { name: '春节', type: 'public', rest: true },
-            '2025-2-3': { name: '春节', type: 'public', rest: true },
-            '2025-2-4': { name: '春节', type: 'public', rest: true },
-            '2025-2-8': { name: '调休上班', type: 'workday', rest: false },
+            // 2025年假期安排（国办发明电〔2024〕12号）
+            2025: {
+                '2025-1-1': { name: '元旦', type: 'holiday', rest: true },
+                
+                '2025-1-28': { name: '春节', type: 'holiday', rest: true },
+                '2025-1-29': { name: '春节', type: 'holiday', rest: true },
+                '2025-1-30': { name: '春节', type: 'holiday', rest: true },
+                '2025-1-31': { name: '春节', type: 'holiday', rest: true },
+                '2025-2-1': { name: '春节', type: 'holiday', rest: true },
+                '2025-2-2': { name: '春节', type: 'holiday', rest: true },
+                '2025-2-3': { name: '春节', type: 'holiday', rest: true },
+                '2025-2-4': { name: '春节', type: 'holiday', rest: true },
+                '2025-1-26': { name: '调休上班', type: 'workday', rest: false },
+                '2025-2-8': { name: '调休上班', type: 'workday', rest: false },
+                
+                '2025-4-4': { name: '清明节', type: 'holiday', rest: true },
+                '2025-4-5': { name: '清明节', type: 'holiday', rest: true },
+                '2025-4-6': { name: '清明节', type: 'holiday', rest: true },
+                
+                '2025-5-1': { name: '劳动节', type: 'holiday', rest: true },
+                '2025-5-2': { name: '劳动节', type: 'holiday', rest: true },
+                '2025-5-3': { name: '劳动节', type: 'holiday', rest: true },
+                '2025-5-4': { name: '劳动节', type: 'holiday', rest: true },
+                '2025-5-5': { name: '劳动节', type: 'holiday', rest: true },
+                '2025-4-27': { name: '调休上班', type: 'workday', rest: false },
+                
+                '2025-5-31': { name: '端午节', type: 'holiday', rest: true },
+                '2025-6-1': { name: '端午节', type: 'holiday', rest: true },
+                '2025-6-2': { name: '端午节', type: 'holiday', rest: true },
+                
+                '2025-10-1': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-2': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-3': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-4': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-5': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-6': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-7': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-10-8': { name: '国庆节', type: 'holiday', rest: true },
+                '2025-9-28': { name: '调休上班', type: 'workday', rest: false },
+                '2025-10-11': { name: '调休上班', type: 'workday', rest: false }
+            },
             
-            // 清明节（4.4-4.6放假）
-            '2025-4-4': { name: '清明节', type: 'public', rest: true },
-            '2025-4-5': { name: '清明节', type: 'public', rest: true },
-            '2025-4-6': { name: '清明节', type: 'public', rest: true },
-            
-            // 劳动节（5.1-5.5放假，4.27调休上班）
-            '2025-4-27': { name: '调休上班', type: 'workday', rest: false },
-            '2025-5-1': { name: '劳动节', type: 'public', rest: true },
-            '2025-5-2': { name: '劳动节', type: 'public', rest: true },
-            '2025-5-3': { name: '劳动节', type: 'public', rest: true },
-            '2025-5-4': { name: '劳动节', type: 'public', rest: true },
-            '2025-5-5': { name: '劳动节', type: 'public', rest: true },
-            
-            // 端午节（5.31-6.2放假）
-            '2025-5-31': { name: '端午节', type: 'public', rest: true },
-            '2025-6-1': { name: '端午节', type: 'public', rest: true },
-            '2025-6-2': { name: '端午节', type: 'public', rest: true },
-            
-            // 国庆节+中秋节（10.1-10.8放假，9.28和10.11调休上班）
-            '2025-9-28': { name: '调休上班', type: 'workday', rest: false },
-            '2025-10-1': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-2': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-3': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-4': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-5': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-6': { name: '中秋节', type: 'public', rest: true },
-            '2025-10-7': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-8': { name: '国庆节', type: 'public', rest: true },
-            '2025-10-11': { name: '调休上班', type: 'workday', rest: false },
-        };
-        
-        const chinaHolidays2026 = {
-            // 元旦（1.1-1.3放假，1.4调休上班）
-            '2026-1-1': { name: '元旦', type: 'public', rest: true },
-            '2026-1-2': { name: '元旦', type: 'public', rest: true },
-            '2026-1-3': { name: '元旦', type: 'public', rest: true },
-            '2026-1-4': { name: '调休上班', type: 'workday', rest: false },
-            
-            // 春节（2.17-2.23放假，2.15调休上班）
-            '2026-2-15': { name: '调休上班', type: 'workday', rest: false },
-            '2026-2-17': { name: '春节', type: 'public', rest: true },
-            '2026-2-18': { name: '春节', type: 'public', rest: true },
-            '2026-2-19': { name: '春节', type: 'public', rest: true },
-            '2026-2-20': { name: '春节', type: 'public', rest: true },
-            '2026-2-21': { name: '春节', type: 'public', rest: true },
-            '2026-2-22': { name: '春节', type: 'public', rest: true },
-            '2026-2-23': { name: '春节', type: 'public', rest: true },
-            
-            // 清明节（4.4-4.6放假）
-            '2026-4-4': { name: '清明节', type: 'public', rest: true },
-            '2026-4-5': { name: '清明节', type: 'public', rest: true },
-            '2026-4-6': { name: '清明节', type: 'public', rest: true },
-            
-            // 劳动节（5.1-5.3放假）
-            '2026-5-1': { name: '劳动节', type: 'public', rest: true },
-            '2026-5-2': { name: '劳动节', type: 'public', rest: true },
-            '2026-5-3': { name: '劳动节', type: 'public', rest: true },
-            
-            // 端午节（6.19-6.21放假）
-            '2026-6-19': { name: '端午节', type: 'public', rest: true },
-            '2026-6-20': { name: '端午节', type: 'public', rest: true },
-            '2026-6-21': { name: '端午节', type: 'public', rest: true },
-            
-            // 中秋节+国庆节（10.1-10.8放假）
-            '2026-10-1': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-2': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-3': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-4': { name: '中秋节', type: 'public', rest: true },
-            '2026-10-5': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-6': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-7': { name: '国庆节', type: 'public', rest: true },
-            '2026-10-8': { name: '国庆节', type: 'public', rest: true },
+            // 2026年假期安排（预测，待国务院发布）
+            2026: {
+                '2026-1-1': { name: '元旦', type: 'holiday', rest: true },
+                '2026-1-2': { name: '元旦', type: 'holiday', rest: true },
+                '2026-1-3': { name: '元旦', type: 'holiday', rest: true },
+                
+                '2026-2-17': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-18': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-19': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-20': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-21': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-22': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-23': { name: '春节', type: 'holiday', rest: true },
+                '2026-2-24': { name: '春节', type: 'holiday', rest: true },
+                
+                '2026-4-4': { name: '清明节', type: 'holiday', rest: true },
+                '2026-4-5': { name: '清明节', type: 'holiday', rest: true },
+                '2026-4-6': { name: '清明节', type: 'holiday', rest: true },
+                
+                '2026-5-1': { name: '劳动节', type: 'holiday', rest: true },
+                '2026-5-2': { name: '劳动节', type: 'holiday', rest: true },
+                '2026-5-3': { name: '劳动节', type: 'holiday', rest: true },
+                '2026-5-4': { name: '劳动节', type: 'holiday', rest: true },
+                '2026-5-5': { name: '劳动节', type: 'holiday', rest: true },
+                
+                '2026-6-19': { name: '端午节', type: 'holiday', rest: true },
+                '2026-6-20': { name: '端午节', type: 'holiday', rest: true },
+                '2026-6-21': { name: '端午节', type: 'holiday', rest: true },
+                
+                '2026-9-25': { name: '中秋节', type: 'holiday', rest: true },
+                '2026-9-26': { name: '中秋节', type: 'holiday', rest: true },
+                '2026-9-27': { name: '中秋节', type: 'holiday', rest: true },
+                
+                '2026-10-1': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-2': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-3': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-4': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-5': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-6': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-7': { name: '国庆节', type: 'holiday', rest: true },
+                '2026-10-8': { name: '国庆节', type: 'holiday', rest: true }
+            }
         };
         
         function getHolidayInfo(date) {
             const year = date.getFullYear();
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const key = `${year}-${month}-${day}`;
+            const key = formatDateKey(date);
             
-            if (year === 2025 && chinaHolidays2025[key]) {
-                return chinaHolidays2025[key];
-            }
-            if (year === 2026 && chinaHolidays2026[key]) {
-                return chinaHolidays2026[key];
+            if (officialHolidays[year] && officialHolidays[year][key]) {
+                return officialHolidays[year][key];
             }
             return null;
         }
         
-        // ===== 每日记录系统 =====
-        let dailyNotes = JSON.parse(localStorage.getItem('dailyNotes_v2') || '{}');
+        // ===== 云端存储系统 =====
+        const STORAGE_KEY = 'calendar_notes_v3';
+        let dailyNotes = {};
         let currentReminderType = 'yearly';
         let selectedModalDate = null;
         
+        // 从云端加载数据
+        async function loadFromCloud() {
+            if (!db) {
+                // 无Firebase配置，使用本地存储
+                dailyNotes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                updateSyncStatus('offline');
+                return;
+            }
+            
+            updateSyncStatus('syncing');
+            
+            try {
+                // 使用设备ID作为文档ID
+                const deviceId = localStorage.getItem('device_id') || generateDeviceId();
+                const docRef = db.collection('calendar_notes').doc(deviceId);
+                const doc = await docRef.get();
+                
+                if (doc.exists) {
+                    dailyNotes = doc.data().notes || {};
+                    // 同时更新本地缓存
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(dailyNotes));
+                } else {
+                    // 新用户，尝试从本地迁移数据
+                    const localData = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                    if (Object.keys(localData).length > 0) {
+                        dailyNotes = localData;
+                        await saveToCloud();
+                    }
+                }
+                
+                updateSyncStatus('online');
+            } catch (e) {
+                console.error('云端加载失败:', e);
+                // 失败时使用本地数据
+                dailyNotes = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+                updateSyncStatus('offline');
+            }
+        }
+        
+        // 保存到云端
+        async function saveToCloud() {
+            if (!db) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dailyNotes));
+                return;
+            }
+            
+            updateSyncStatus('syncing');
+            
+            try {
+                const deviceId = localStorage.getItem('device_id') || generateDeviceId();
+                await db.collection('calendar_notes').doc(deviceId).set({
+                    notes: dailyNotes,
+                    updatedAt: new Date()
+                });
+                
+                // 同时保存本地备份
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dailyNotes));
+                updateSyncStatus('online');
+            } catch (e) {
+                console.error('云端保存失败:', e);
+                // 保存到本地
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(dailyNotes));
+                updateSyncStatus('offline');
+            }
+        }
+        
+        function generateDeviceId() {
+            const id = 'device_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('device_id', id);
+            return id;
+        }
+        
+        function updateSyncStatus(status) {
+            const el = document.getElementById('syncStatus');
+            const statusMap = {
+                online: { text: '已同步', class: 'online', icon: '☁️' },
+                offline: { text: '离线', class: 'offline', icon: '💻' },
+                syncing: { text: '同步中...', class: 'syncing', icon: '🔄' }
+            };
+            
+            const s = statusMap[status];
+            el.className = 'sync-status ' + s.class;
+            el.innerHTML = `<span>${s.icon}</span><span>${s.text}</span>`;
+        }
+        
+        // ===== 日期记录功能 =====
         function openDayModal(day) {
             selectedModalDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
             const dateKey = formatDateKey(selectedModalDate);
             const note = dailyNotes[dateKey];
             
-            // 设置标题
             const dateStr = `${selectedModalDate.getMonth() + 1}月${selectedModalDate.getDate()}日`;
             document.getElementById('modalDateTitle').textContent = `📅 ${dateStr} 记录`;
             document.getElementById('modalFullDate').textContent = 
                 `${selectedModalDate.getFullYear()}年${dateStr} ${['周日','周一','周二','周三','周四','周五','周六'][selectedModalDate.getDay()]}`;
             
-            // 显示已有记录
             const savedDisplay = document.getElementById('savedNoteDisplay');
             const deleteBtn = document.getElementById('deleteNoteBtn');
             
             if (note && note.text) {
                 savedDisplay.style.display = 'block';
                 document.getElementById('savedNoteText').textContent = note.text;
-                
-                const keyword = note.text.slice(0, 2);
-                document.getElementById('savedNoteKeyword').textContent = `关键词：${keyword}`;
-                
+                document.getElementById('savedNoteKeyword').textContent = `关键词：${note.keyword}`;
                 document.getElementById('noteContentInput').value = note.text;
                 currentReminderType = note.reminderType || 'yearly';
                 deleteBtn.style.display = 'block';
@@ -1146,12 +1020,9 @@
                 deleteBtn.style.display = 'none';
             }
             
-            // 设置提醒类型按钮
             document.querySelectorAll('.reminder-type-btn').forEach(btn => {
                 btn.classList.remove('selected');
-                if (btn.dataset.type === currentReminderType) {
-                    btn.classList.add('selected');
-                }
+                if (btn.dataset.type === currentReminderType) btn.classList.add('selected');
             });
             
             document.getElementById('dayModal').classList.add('show');
@@ -1169,69 +1040,31 @@
             currentReminderType = btn.dataset.type;
         }
         
-        function saveDayNote() {
+        async function saveDayNote() {
             const text = document.getElementById('noteContentInput').value.trim();
-            
-            if (!text) {
-                alert('请输入记录内容');
-                return;
-            }
+            if (!text) { alert('请输入记录内容'); return; }
             
             const dateKey = formatDateKey(selectedModalDate);
-            
-            // 提取前两个字作为关键词
             const keyword = text.slice(0, 2);
             
             dailyNotes[dateKey] = {
                 text: text,
                 keyword: keyword,
                 reminderType: currentReminderType,
-                date: {
-                    year: selectedModalDate.getFullYear(),
-                    month: selectedModalDate.getMonth() + 1,
-                    day: selectedModalDate.getDate(),
-                    weekday: selectedModalDate.getDay()
-                }
+                updatedAt: new Date().toISOString()
             };
             
-            localStorage.setItem('dailyNotes_v2', JSON.stringify(dailyNotes));
-            
-            // 根据提醒类型创建循环提醒
-            if (currentReminderType !== 'once') {
-                createRecurringReminder(selectedModalDate, text, currentReminderType);
-            }
-            
+            await saveToCloud();
             renderCalendar();
             closeDayModal();
         }
         
-        function deleteNote() {
+        async function deleteNote() {
             const dateKey = formatDateKey(selectedModalDate);
             delete dailyNotes[dateKey];
-            localStorage.setItem('dailyNotes_v2', JSON.stringify(dailyNotes));
+            await saveToCloud();
             renderCalendar();
             closeDayModal();
-        }
-        
-        function createRecurringReminder(date, text, type) {
-            // 存储提醒规则，用于后续计算
-            const reminders = JSON.parse(localStorage.getItem('recurringReminders') || '[]');
-            
-            // 删除同类型的旧提醒
-            const filtered = reminders.filter(r => 
-                !(r.type === type && r.originalDate === formatDateKey(date))
-            );
-            
-            filtered.push({
-                type: type,
-                originalDate: formatDateKey(date),
-                text: text,
-                month: date.getMonth() + 1,
-                day: date.getDate(),
-                weekday: date.getDay()
-            });
-            
-            localStorage.setItem('recurringReminders', JSON.stringify(filtered));
         }
         
         function getActiveReminders(date) {
@@ -1239,42 +1072,27 @@
             const dateKey = formatDateKey(date);
             const note = dailyNotes[dateKey];
             
-            // 直接记录
             if (note && note.keyword) {
-                reminders.push({
-                    text: note.keyword,
-                    source: 'direct'
-                });
+                reminders.push({ text: note.keyword, source: 'direct' });
             }
             
             // 循环提醒
-            const recurring = JSON.parse(localStorage.getItem('recurringReminders') || '[]');
-            const month = date.getMonth() + 1;
-            const day = date.getDate();
-            const weekday = date.getDay();
-            
-            recurring.forEach(r => {
+            Object.entries(dailyNotes).forEach(([key, n]) => {
+                if (key === dateKey || !n.reminderType || n.reminderType === 'once') return;
+                
+                const noteDate = new Date(key);
+                const month = date.getMonth() + 1;
+                const day = date.getDate();
+                const weekday = date.getDay();
+                
                 let match = false;
-                
-                switch(r.type) {
-                    case 'weekly':
-                        match = (weekday === r.weekday && formatDateKey(date) !== r.originalDate);
-                        break;
-                    case 'monthly':
-                        match = (day === r.day && formatDateKey(date) !== r.originalDate);
-                        break;
-                    case 'yearly':
-                        match = (month === r.month && day === r.day && formatDateKey(date) !== r.originalDate);
-                        break;
+                switch(n.reminderType) {
+                    case 'weekly': match = (weekday === noteDate.getDay()); break;
+                    case 'monthly': match = (day === noteDate.getDate()); break;
+                    case 'yearly': match = (month === noteDate.getMonth() + 1 && day === noteDate.getDate()); break;
                 }
                 
-                if (match) {
-                    reminders.push({
-                        text: r.text.slice(0, 2),
-                        source: 'recurring',
-                        type: r.type
-                    });
-                }
+                if (match) reminders.push({ text: n.keyword, source: 'recurring' });
             });
             
             return reminders;
@@ -1284,7 +1102,7 @@
             return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
         }
         
-        // ===== 农历系统（简化版） =====
+        // ===== 农历系统 =====
         const lunarMonths = ['正','二','三','四','五','六','七','八','九','十','冬','腊'];
         const lunarDays = ['初一','初二','初三','初四','初五','初六','初七','初八','初九','初十',
                           '十一','十二','十三','十四','十五','十六','十七','十八','十九','二十',
@@ -1292,8 +1110,8 @@
         const heavenlyStems = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
         const earthlyBranches = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
         
-        // 2025-2026春节日期
         const springFestivals = {
+            2024: new Date(2024, 1, 10),
             2025: new Date(2025, 0, 29),
             2026: new Date(2026, 1, 17),
             2027: new Date(2027, 1, 6)
@@ -1305,56 +1123,33 @@
             if (!sf) return { text: '农历计算中...' };
             
             const diff = Math.floor((date - sf) / 86400000);
-            
             if (diff < 0) {
-                // 计算上一年农历
                 const prevSf = springFestivals[year - 1];
                 if (prevSf) {
                     const prevDiff = Math.floor((date - prevSf) / 86400000);
                     return calcLunar(prevDiff);
                 }
             }
-            
             return calcLunar(diff);
         }
         
         function calcLunar(days) {
-            // 简化农历月份计算（29/30天交替）
             const monthDays = [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 29];
-            let month = 0;
-            let day = days;
+            let month = 0, day = days;
             
             for (let i = 0; i < 12; i++) {
-                if (day < monthDays[i]) {
-                    month = i;
-                    break;
-                }
+                if (day < monthDays[i]) { month = i; break; }
                 day -= monthDays[i];
                 month = i;
             }
-            
-            return {
-                month: month + 1,
-                day: day + 1,
-                text: `${lunarMonths[month]}月${lunarDays[day]}`
-            };
+            return { month: month + 1, day: day + 1, text: `${lunarMonths[month]}月${lunarDays[day]}` };
         }
         
         function getLunarYear(date) {
-            const year = date.getFullYear();
-            const stem = heavenlyStems[(year - 4) % 10];
-            const branch = earthlyBranches[(year - 4) % 12];
+            const stem = heavenlyStems[(date.getFullYear() - 4) % 10];
+            const branch = earthlyBranches[(date.getFullYear() - 4) % 12];
             return `${stem}${branch}年`;
         }
-        
-        // ===== 诗词 =====
-        const poetryDatabase = [
-            { lines: ["一年之计在于春","一日之计在于晨"], author: "《增广贤文》" },
-            { lines: ["春眠不觉晓","处处闻啼鸟"], author: "孟浩然《春晓》" },
-            { lines: ["好雨知时节","当春乃发生"], author: "杜甫《春夜喜雨》" },
-            { lines: ["天生我材必有用","千金散尽还复来"], author: "李白《将进酒》" },
-            { lines: ["长风破浪会有时","直挂云帆济沧海"], author: "李白《行路难》" }
-        ];
         
         // ===== 日历渲染 =====
         let currentDate = new Date();
@@ -1372,31 +1167,23 @@
             const today = new Date();
             
             let html = '';
-            ['日','一','二','三','四','五','六'].forEach(d => {
-                html += `<div class="weekday">${d}</div>`;
-            });
+            ['日','一','二','三','四','五','六'].forEach(d => html += `<div class="weekday">${d}</div>`);
             
-            // 上月
             for (let i = firstDay - 1; i >= 0; i--) {
                 const d = daysInPrevMonth - i;
                 const date = new Date(year, month - 1, d);
-                const lunar = getLunarDate(date);
-                html += renderDayCell(date, d, true, today, lunar);
+                html += renderDayCell(date, d, true, today);
             }
             
-            // 当月
             for (let i = 1; i <= daysInMonth; i++) {
                 const date = new Date(year, month, i);
-                const lunar = getLunarDate(date);
-                html += renderDayCell(date, i, false, today, lunar);
+                html += renderDayCell(date, i, false, today);
             }
             
-            // 下月
             const remaining = 42 - (firstDay + daysInMonth);
             for (let i = 1; i <= remaining; i++) {
                 const date = new Date(year, month + 1, i);
-                const lunar = getLunarDate(date);
-                html += renderDayCell(date, i, true, today, lunar);
+                html += renderDayCell(date, i, true, today);
             }
             
             document.getElementById('calendarGrid').innerHTML = html;
@@ -1404,10 +1191,11 @@
             updateHolidayInfo();
         }
         
-        function renderDayCell(date, dayNum, isOtherMonth, today, lunar) {
+        function renderDayCell(date, dayNum, isOtherMonth, today) {
             const isToday = date.toDateString() === today.toDateString();
             const isSelected = date.toDateString() === selectedDate.toDateString();
             const holiday = getHolidayInfo(date);
+            const lunar = getLunarDate(date);
             const reminders = getActiveReminders(date);
             
             let classes = ['calendar-day'];
@@ -1420,19 +1208,12 @@
             }
             
             let lunarText = '';
-            if (holiday) {
-                lunarText = holiday.name.length > 2 ? holiday.name.slice(0,2) : holiday.name;
-            } else if (lunar.day === 1) {
-                lunarText = lunarMonths[lunar.month - 1] + '月';
-            } else {
-                lunarText = lunarDays[lunar.day - 1];
-            }
+            if (holiday) lunarText = holiday.name.length > 2 ? holiday.name.slice(0,2) : holiday.name;
+            else if (lunar.day === 1) lunarText = lunarMonths[lunar.month - 1] + '月';
+            else lunarText = lunarDays[lunar.day - 1];
             
-            // 关键词显示
             let keywordHtml = '';
-            if (reminders.length > 0) {
-                keywordHtml = `<span class="day-keyword">${reminders[0].text}</span>`;
-            }
+            if (reminders.length > 0) keywordHtml = `<span class="day-keyword">${reminders[0].text}</span>`;
             
             return `
                 <div class="${classes.join(' ')}" onclick="openDayModal(${dayNum})">
@@ -1448,11 +1229,10 @@
             const year = selectedDate.getFullYear();
             const month = selectedDate.getMonth() + 1;
             const day = selectedDate.getDate();
-            const weekdays = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
             
             document.getElementById('yearMonth').textContent = `${year}年 ${month}月`;
             document.getElementById('bigDay').textContent = day;
-            document.getElementById('weekdayName').textContent = weekdays[selectedDate.getDay()];
+            document.getElementById('weekdayName').textContent = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][selectedDate.getDay()];
             
             const lunar = getLunarDate(selectedDate);
             document.getElementById('lunarDate').textContent = `农历${lunar.text} · ${getLunarYear(selectedDate)}`;
@@ -1463,19 +1243,14 @@
                 badge.textContent = holiday.rest ? `🎊 ${holiday.name}` : `💼 ${holiday.name}`;
                 badge.className = holiday.rest ? 'holiday-badge public-holiday' : 'holiday-badge workday';
                 badge.style.display = 'inline-block';
-            } else {
-                badge.style.display = 'none';
-            }
+            } else badge.style.display = 'none';
             
-            // 调休提示
             const workdayNotice = document.getElementById('workdayNotice');
             const workdayText = document.getElementById('workdayText');
             if (holiday && !holiday.rest) {
                 workdayText.textContent = `今天是${holiday.name}，请记得调好闹钟上班哦！`;
                 workdayNotice.classList.add('show');
-            } else {
-                workdayNotice.classList.remove('show');
-            }
+            } else workdayNotice.classList.remove('show');
         }
         
         function updateHolidayInfo() {
@@ -1484,22 +1259,15 @@
             const container = document.getElementById('holidayList');
             
             const holidays = [];
-            const holidayData = year === 2025 ? chinaHolidays2025 : chinaHolidays2026;
-            
-            Object.entries(holidayData).forEach(([key, info]) => {
-                const [y, m, d] = key.split('-').map(Number);
-                if (m === month && info.rest) {
-                    holidays.push({ day: d, ...info });
-                }
-            });
+            if (officialHolidays[year]) {
+                Object.entries(officialHolidays[year]).forEach(([key, info]) => {
+                    const [y, m, d] = key.split('-').map(Number);
+                    if (m === month && info.rest) holidays.push({ day: d, ...info });
+                });
+            }
             
             if (holidays.length === 0) {
-                container.innerHTML = `
-                    <div class="holiday-item">
-                        <span class="holiday-icon">📅</span>
-                        <span class="holiday-text">本月暂无公共假期</span>
-                    </div>
-                `;
+                container.innerHTML = `<div class="holiday-item"><span class="holiday-icon">📅</span><span class="holiday-text">本月暂无公共假期</span></div>`;
             } else {
                 container.innerHTML = holidays.map(h => `
                     <div class="holiday-item">
@@ -1528,9 +1296,11 @@
                 const data = await res.json();
                 
                 const temp = Math.round(data.current.temperature_2m);
+                const code = data.current.weather_code;
+                
                 document.getElementById('temperature').textContent = `${temp}°`;
-                document.getElementById('weatherDesc').textContent = ['晴朗','晴间多云','多云','阴天'][data.current.weather_code] || '多云';
-                document.getElementById('weatherIcon').textContent = ['☀️','🌤️','⛅','☁️'][data.current.weather_code] || '☁️';
+                document.getElementById('weatherDesc').textContent = ['晴朗','晴间多云','多云','阴天'][code] || '多云';
+                document.getElementById('weatherIcon').textContent = ['☀️','🌤️','⛅','☁️'][code] || '☁️';
                 
                 updateClothingAdvice(temp);
             } catch (e) {
@@ -1547,23 +1317,34 @@
             document.getElementById('clothingIcons').textContent = icons;
         }
         
-        function closeAlert() {
-            document.getElementById('alertBanner').classList.remove('show');
-        }
+        function closeAlert() { document.getElementById('alertBanner').classList.remove('show'); }
         
         // ===== 初始化 =====
-        document.addEventListener('DOMContentLoaded', () => {
-            initPassword();
+        function initApp() {
+            document.getElementById('loadingOverlay').classList.add('show');
             
-            const poetry = poetryDatabase[Math.floor(Math.random() * poetryDatabase.length)];
-            document.getElementById('poetryLine1').textContent = poetry.lines[0];
-            document.getElementById('poetryLine2').textContent = poetry.lines[1];
-            document.getElementById('poetryAuthor').textContent = '—— ' + poetry.author;
-            
-            renderCalendar();
-            getWeather();
-            setInterval(getWeather, 60000);
-        });
+            // 加载云端数据
+            loadFromCloud().then(() => {
+                document.getElementById('loadingOverlay').classList.remove('show');
+                
+                // 显示诗词
+                const poetryDatabase = [
+                    { lines: ["一年之计在于春","一日之计在于晨"], author: "《增广贤文》" },
+                    { lines: ["春眠不觉晓","处处闻啼鸟"], author: "孟浩然《春晓》" },
+                    { lines: ["好雨知时节","当春乃发生"], author: "杜甫《春夜喜雨》" }
+                ];
+                const poetry = poetryDatabase[Math.floor(Math.random() * poetryDatabase.length)];
+                document.getElementById('poetryLine1').textContent = poetry.lines[0];
+                document.getElementById('poetryLine2').textContent = poetry.lines[1];
+                document.getElementById('poetryAuthor').textContent = '—— ' + poetry.author;
+                
+                renderCalendar();
+                getWeather();
+                setInterval(getWeather, 60000);
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', initPassword);
     </script>
 </body>
 </html>
