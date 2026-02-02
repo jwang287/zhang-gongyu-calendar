@@ -17,7 +17,7 @@
             font-family: 'Nunito', 'Noto Serif SC', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f0 50%, #f8e8ff 100%);
+            background: linear-gradient(135deg, #f0f9f4 0%, #e8f4f8 50%, #f5f0f9 100%);
         }
         
         .bg-container {
@@ -25,7 +25,7 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: -2;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f0 25%, #f8e8ff 50%, #fff0f5 75%, #ffe4e1 100%);
+            background: linear-gradient(135deg, #f0f9f4 0%, #e8f4f8 25%, #f0f7ff 50%, #f8f5ff 75%, #fff5f0 100%);
             overflow: hidden;
         }
         
@@ -35,10 +35,10 @@
             top: -50%; left: -50%;
             width: 200%; height: 200%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(221, 160, 221, 0.3) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 218, 185, 0.2) 0%, transparent 40%),
-                radial-gradient(circle at 60% 60%, rgba(176, 224, 230, 0.2) 0%, transparent 40%);
+                radial-gradient(circle at 20% 80%, rgba(167, 216, 188, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(176, 196, 222, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 228, 196, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 60% 60%, rgba(200, 230, 201, 0.2) 0%, transparent 40%);
             animation: bgFloat 20s ease-in-out infinite;
         }
         
@@ -53,7 +53,7 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe4f0 50%, #f8e8ff 100%);
+            background: linear-gradient(135deg, #f0f9f4 0%, #e8f4f8 50%, #f5f0f9 100%);
             z-index: 10000;
             display: flex;
             justify-content: center;
@@ -67,37 +67,37 @@
             background: white;
             padding: 2rem;
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.2);
+            box-shadow: 0 20px 60px rgba(102, 126, 104, 0.15);
             text-align: center;
             max-width: 350px;
             width: 90%;
-            border: 3px solid rgba(255, 182, 193, 0.5);
+            border: 2px solid rgba(167, 198, 182, 0.5);
         }
         
-        .password-title { font-size: 1.5rem; color: #ff69b4; font-weight: 700; margin-bottom: 0.5rem; }
-        .password-subtitle { font-size: 0.85rem; color: #9370db; margin-bottom: 1.5rem; }
+        .password-title { font-size: 1.5rem; color: #2d5a3d; font-weight: 700; margin-bottom: 0.5rem; }
+        .password-subtitle { font-size: 0.85rem; color: #5a7a6a; margin-bottom: 1.5rem; }
         
         .password-input-wrapper { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem; }
         
         .password-dot {
             width: 50px; height: 55px;
-            border: 2px solid rgba(255, 182, 193, 0.5);
+            border: 2px solid rgba(167, 198, 182, 0.6);
             border-radius: 12px;
             font-size: 1.5rem;
             text-align: center;
             line-height: 50px;
             font-weight: 700;
-            color: #ff69b4;
-            background: rgba(255, 240, 245, 0.5);
+            color: #2d5a3d;
+            background: rgba(240, 249, 244, 0.8);
             transition: all 0.2s;
         }
         
-        .password-dot:focus { outline: none; border-color: #ff69b4; transform: scale(1.05); box-shadow: 0 0 10px rgba(255, 105, 180, 0.3); }
-        .password-dot.filled { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; border-color: #ff69b4; }
+        .password-dot:focus { outline: none; border-color: #4a7c59; transform: scale(1.05); box-shadow: 0 0 10px rgba(74, 124, 89, 0.2); }
+        .password-dot.filled { background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%); color: white; border-color: #4a7c59; }
         
-        .password-error { color: #ff4757; font-size: 0.8rem; margin-top: 0.5rem; min-height: 1.2rem; }
+        .password-error { color: #c44536; font-size: 0.8rem; margin-top: 0.5rem; min-height: 1.2rem; }
         .password-lock { font-size: 3rem; margin-bottom: 1rem; }
-        .lock-timer { color: #ff69b4; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; }
+        .lock-timer { color: #4a7c59; font-weight: 700; font-size: 1.2rem; margin-top: 1rem; }
         
         /* ===== 加载层 ===== */
         .loading-overlay {
@@ -115,7 +115,7 @@
         .loading-overlay.show { display: flex; }
         .loading-spinner { font-size: 3rem; animation: spin 1s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .loading-text { margin-top: 1rem; color: #ff69b4; font-weight: 600; }
+        .loading-text { margin-top: 1rem; color: #4a7c59; font-weight: 600; }
         
         /* ===== 主容器 ===== */
         .main-container {
@@ -130,11 +130,11 @@
         }
         
         .glass-card {
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 245, 250, 0.95) 100%);
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 252, 251, 0.98) 100%);
             backdrop-filter: blur(20px);
-            border: 2px solid rgba(255, 182, 193, 0.4);
-            border-radius: 28px;
-            box-shadow: 0 20px 60px -15px rgba(255, 105, 180, 0.3), 0 8px 25px -5px rgba(255, 182, 193, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(167, 198, 182, 0.4);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px -15px rgba(102, 126, 104, 0.15), 0 8px 25px -5px rgba(167, 198, 182, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
             overflow: hidden;
             width: 100%;
             max-width: 900px;
@@ -155,15 +155,15 @@
             animation: bannerPulse 2s ease-in-out infinite;
         }
         .alert-banner.show { display: block; }
-        @keyframes bannerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+        @keyframes bannerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.9; } }
         .alert-banner .close-btn { float: right; cursor: pointer; margin-left: 10px; }
         
         /* ===== 顶部日期区 ===== */
         .hero-date-section {
             padding: 1.5rem 1rem 0.8rem;
             text-align: center;
-            border-bottom: 2px dashed rgba(255, 182, 193, 0.5);
-            background: linear-gradient(180deg, rgba(255, 240, 245, 0.5) 0%, transparent 100%);
+            border-bottom: 2px dashed rgba(167, 198, 182, 0.4);
+            background: linear-gradient(180deg, rgba(240, 249, 244, 0.6) 0%, transparent 100%);
             position: relative;
         }
         
@@ -178,23 +178,23 @@
         }
         
         .holiday-badge.public-holiday {
-            background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%);
+            background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%);
             color: white;
         }
         
         .holiday-badge.workday {
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            background: linear-gradient(135deg, #5a8a9a 0%, #7ba3b0 100%);
             color: white;
         }
         
         @keyframes badgeBounce { from { transform: translateY(0); } to { transform: translateY(-3px); } }
         
-        .year-month { font-size: 0.9rem; color: #ff69b4; letter-spacing: 0.2em; margin-bottom: 0.3rem; font-weight: 600; }
+        .year-month { font-size: 0.9rem; color: #2d5a3d; letter-spacing: 0.2em; margin-bottom: 0.3rem; font-weight: 600; }
         
         .big-day {
             font-size: clamp(3.5rem, 14vw, 7rem);
             font-weight: 800;
-            background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 50%, #ffa500 100%);
+            background: linear-gradient(135deg, #2d5a3d 0%, #4a7c59 50%, #6b9b7a 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             line-height: 1;
@@ -202,24 +202,24 @@
             font-family: 'Nunito', sans-serif;
         }
         
-        .weekday-name { font-size: 1rem; color: #ff8c69; letter-spacing: 0.25em; margin-top: 0.3rem; font-weight: 600; }
+        .weekday-name { font-size: 1rem; color: #5a7a6a; letter-spacing: 0.25em; margin-top: 0.3rem; font-weight: 600; }
         
         .lunar-info {
             margin-top: 0.6rem;
             padding-top: 0.6rem;
-            border-top: 1px solid rgba(255, 182, 193, 0.3);
+            border-top: 1px solid rgba(167, 198, 182, 0.4);
         }
         
-        .lunar-date { font-size: 0.85rem; color: #9370db; letter-spacing: 0.08em; font-weight: 500; }
-        .lunar-festival { font-size: 0.8rem; color: #ff1493; margin-top: 0.15rem; font-weight: 600; }
+        .lunar-date { font-size: 0.85rem; color: #5a8a9a; letter-spacing: 0.08em; font-weight: 500; }
+        .lunar-festival { font-size: 0.8rem; color: #4a7c59; margin-top: 0.15rem; font-weight: 600; }
         
         /* ===== 调休提示条 ===== */
         .workday-notice {
-            background: linear-gradient(90deg, rgba(116, 185, 255, 0.2) 0%, rgba(9, 132, 227, 0.2) 100%);
-            border-left: 4px solid #0984e3;
+            background: linear-gradient(90deg, rgba(90, 138, 154, 0.15) 0%, rgba(123, 163, 176, 0.15) 100%);
+            border-left: 4px solid #5a8a9a;
             padding: 0.5rem 1rem;
             font-size: 0.8rem;
-            color: #0984e3;
+            color: #3d6a7a;
             display: none;
         }
         .workday-notice.show { display: block; }
@@ -227,7 +227,7 @@
         /* ===== 诗词区 ===== */
         .poetry-section {
             padding: 0.8rem 1rem;
-            background: linear-gradient(90deg, rgba(255, 218, 185, 0.3) 0%, rgba(255, 182, 193, 0.3) 50%, rgba(221, 160, 221, 0.3) 100%);
+            background: linear-gradient(90deg, rgba(167, 216, 188, 0.25) 0%, rgba(200, 230, 201, 0.25) 50%, rgba(176, 196, 222, 0.25) 100%);
             text-align: center;
             position: relative;
         }
@@ -236,23 +236,23 @@
         .poetry-section::before { left: 15px; top: 50%; transform: translateY(-50%); }
         .poetry-section::after { right: 15px; top: 50%; transform: translateY(-50%); }
         
-        .poetry-quote { font-size: 1.05rem; color: #6b5b95; line-height: 1.7; letter-spacing: 0.08em; font-weight: 600; }
-        .poetry-author { font-size: 0.8rem; color: #9370db; margin-top: 0.4rem; font-weight: 500; }
-        .poetry-divider { width: 40px; height: 3px; background: linear-gradient(90deg, #ffb6c1, #dda0dd); border-radius: 2px; margin: 0.5rem auto; }
+        .poetry-quote { font-size: 1.05rem; color: #2d4a3e; line-height: 1.7; letter-spacing: 0.08em; font-weight: 600; }
+        .poetry-author { font-size: 0.8rem; color: #5a7a6a; margin-top: 0.4rem; font-weight: 500; }
+        .poetry-divider { width: 40px; height: 3px; background: linear-gradient(90deg, #a7d8bc, #8fb9a8); border-radius: 2px; margin: 0.5rem auto; }
         
         /* ===== 主体内容 ===== */
         .content-body { display: grid; grid-template-columns: 1.4fr 1fr; min-height: auto; }
         @media (max-width: 900px) { .content-body { grid-template-columns: 1fr; } }
         
         /* 日历区 */
-        .calendar-section { padding: 1rem; border-right: 2px dashed rgba(255, 182, 193, 0.3); }
-        @media (max-width: 900px) { .calendar-section { border-right: none; border-bottom: 2px dashed rgba(255, 182, 193, 0.3); } }
+        .calendar-section { padding: 1rem; border-right: 2px dashed rgba(167, 198, 182, 0.3); }
+        @media (max-width: 900px) { .calendar-section { border-right: none; border-bottom: 2px dashed rgba(167, 198, 182, 0.3); } }
         
         .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-        .current-month { font-size: 1rem; color: #ff69b4; font-weight: 700; }
+        .current-month { font-size: 1rem; color: #2d5a3d; font-weight: 700; }
         
         .nav-btn {
-            background: linear-gradient(135deg, #ffb6c1 0%, #dda0dd 100%);
+            background: linear-gradient(135deg, #a7d8bc 0%, #8fb9a8 100%);
             border: none;
             color: #fff;
             width: 32px; height: 32px;
@@ -260,14 +260,14 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 700;
-            box-shadow: 0 2px 8px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 2px 8px rgba(74, 124, 89, 0.2);
             transition: all 0.2s ease;
         }
-        .nav-btn:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(255, 105, 180, 0.4); }
+        .nav-btn:hover { transform: scale(1.1); box-shadow: 0 4px 12px rgba(74, 124, 89, 0.3); }
         
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.3rem; }
         
-        .weekday { text-align: center; font-size: 0.75rem; color: #9370db; padding: 0.35rem 0; font-weight: 700; }
+        .weekday { text-align: center; font-size: 0.75rem; color: #4a7c59; padding: 0.35rem 0; font-weight: 700; }
         
         .calendar-day {
             aspect-ratio: 1;
@@ -284,18 +284,18 @@
             min-height: 50px;
         }
         
-        .calendar-day .day-num { font-size: 0.9rem; color: #6b5b95; }
-        .calendar-day .day-lunar { font-size: 0.55rem; color: #999; margin-top: 1px; }
+        .calendar-day .day-num { font-size: 0.9rem; color: #2d4a3e; }
+        .calendar-day .day-lunar { font-size: 0.55rem; color: #7a9a8a; margin-top: 1px; }
         .calendar-day .day-keyword {
             font-size: 0.5rem;
-            color: #ff69b4;
+            color: #2d5a3d;
             font-weight: 700;
             max-width: 90%;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             margin-top: 1px;
-            background: rgba(255, 182, 193, 0.2);
+            background: rgba(167, 216, 188, 0.35);
             padding: 0 3px;
             border-radius: 3px;
         }
@@ -309,78 +309,78 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             margin-top: 2px;
-            background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%);
+            background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%);
             padding: 1px 4px;
             border-radius: 4px;
-            box-shadow: 0 1px 3px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 1px 3px rgba(74, 124, 89, 0.25);
         }
         
         .calendar-day.today .day-note-text {
-            background: rgba(255, 255, 255, 0.9);
-            color: #ff69b4;
+            background: rgba(255, 255, 255, 0.95);
+            color: #2d5a3d;
         }
         
         .calendar-day.has-note {
-            border: 1px solid rgba(255, 105, 180, 0.3);
+            border: 1px solid rgba(74, 124, 89, 0.25);
         }
         .calendar-day .day-holiday-icon { font-size: 0.6rem; position: absolute; top: 1px; right: 2px; }
         
-        .calendar-day:hover { background: rgba(255, 182, 193, 0.3); transform: scale(1.05); }
+        .calendar-day:hover { background: rgba(167, 216, 188, 0.35); transform: scale(1.05); }
         .calendar-day.other-month { opacity: 0.4; }
         .calendar-day.other-month .day-num { color: rgba(107, 91, 149, 0.5); }
         .calendar-day.today { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); box-shadow: 0 3px 10px rgba(255, 105, 180, 0.4); }
         .calendar-day.today .day-num { color: #fff; }
         .calendar-day.today .day-lunar { color: rgba(255,255,255,0.8); }
         .calendar-day.today .day-keyword { background: rgba(255,255,255,0.3); color: #fff; }
-        .calendar-day.selected { background: rgba(221, 160, 221, 0.4); border: 2px solid #dda0dd; }
-        .calendar-day.public-holiday { background: linear-gradient(135deg, rgba(255, 182, 193, 0.3) 0%, rgba(221, 160, 221, 0.3) 100%); }
-        .calendar-day.public-holiday .day-num { color: #ff1493; }
-        .calendar-day.workday-adjust { background: rgba(116, 185, 255, 0.15); border: 1px dashed #0984e3; }
-        .calendar-day.workday-adjust .day-num { color: #0984e3; }
+        .calendar-day.selected { background: rgba(143, 185, 168, 0.4); border: 2px solid #8fb9a8; }
+        .calendar-day.public-holiday { background: linear-gradient(135deg, rgba(167, 216, 188, 0.35) 0%, rgba(200, 230, 201, 0.35) 100%); }
+        .calendar-day.public-holiday .day-num { color: #2d7a4d; }
+        .calendar-day.workday-adjust { background: rgba(176, 196, 222, 0.2); border: 1px dashed #5a8a9a; }
+        .calendar-day.workday-adjust .day-num { color: #3d6a7a; }
         
         /* 信息面板 */
         .info-panel { padding: 0.8rem; display: flex; flex-direction: column; gap: 0.6rem; max-height: 520px; overflow-y: auto; }
         .info-panel::-webkit-scrollbar { width: 4px; }
-        .info-panel::-webkit-scrollbar-thumb { background: rgba(255, 182, 193, 0.5); border-radius: 2px; }
+        .info-panel::-webkit-scrollbar-thumb { background: rgba(167, 198, 182, 0.5); border-radius: 2px; }
         
         /* 天气模块 */
         .weather-module {
-            background: linear-gradient(145deg, rgba(255, 240, 245, 0.9) 0%, rgba(240, 248, 255, 0.9) 100%);
+            background: linear-gradient(145deg, rgba(240, 249, 244, 0.95) 0%, rgba(232, 244, 248, 0.95) 100%);
             border-radius: 16px;
             padding: 0.9rem;
-            border: 2px solid rgba(255, 182, 193, 0.3);
-            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.1);
+            border: 1px solid rgba(167, 198, 182, 0.35);
+            box-shadow: 0 4px 15px rgba(102, 126, 104, 0.08);
         }
         .weather-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .location { font-size: 0.75rem; color: #9370db; font-weight: 600; }
-        .aqi-badge { font-size: 0.65rem; padding: 0.2rem 0.5rem; background: linear-gradient(135deg, #98fb98 0%, #90ee90 100%); color: #2e8b57; border-radius: 12px; font-weight: 700; }
+        .location { font-size: 0.75rem; color: #4a7c59; font-weight: 600; }
+        .aqi-badge { font-size: 0.65rem; padding: 0.2rem 0.5rem; background: linear-gradient(135deg, #a7d8bc 0%, #8fb9a8 100%); color: #1e4a2e; border-radius: 12px; font-weight: 700; }
         .weather-main { display: flex; align-items: center; gap: 0.8rem; }
         .weather-icon { font-size: 2.5rem; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
-        .temperature { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Nunito', sans-serif; }
-        .weather-desc { font-size: 0.85rem; color: #6b5b95; font-weight: 500; }
+        .temperature { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, #2d5a3d 0%, #4a7c59 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-family: 'Nunito', sans-serif; }
+        .weather-desc { font-size: 0.85rem; color: #4a6a5a; font-weight: 500; }
         
         /* 穿搭模块 */
         .clothing-module {
-            background: linear-gradient(145deg, rgba(255, 250, 240, 0.9) 0%, rgba(255, 240, 245, 0.9) 100%);
+            background: linear-gradient(145deg, rgba(255, 252, 245, 0.95) 0%, rgba(250, 248, 240, 0.95) 100%);
             border-radius: 16px;
             padding: 0.9rem;
-            border: 2px solid rgba(255, 218, 185, 0.4);
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
+            border: 1px solid rgba(222, 211, 176, 0.4);
+            box-shadow: 0 4px 15px rgba(102, 126, 104, 0.06);
         }
-        .clothing-title { font-size: 0.75rem; color: #ff8c69; margin-bottom: 0.4rem; font-weight: 700; }
-        .clothing-advice { font-size: 0.9rem; line-height: 1.6; color: #6b5b95; font-weight: 500; }
+        .clothing-title { font-size: 0.75rem; color: #8a7a5a; margin-bottom: 0.4rem; font-weight: 700; }
+        .clothing-advice { font-size: 0.9rem; line-height: 1.6; color: #4a5a4a; font-weight: 500; }
         .clothing-icons { margin-top: 0.4rem; font-size: 1.4rem; letter-spacing: 0.4rem; }
         
         /* 假期模块 */
         .holiday-module {
-            background: linear-gradient(145deg, rgba(255, 240, 250, 0.95) 0%, rgba(255, 245, 255, 0.95) 100%);
+            background: linear-gradient(145deg, rgba(248, 252, 250, 0.98) 0%, rgba(245, 250, 248, 0.98) 100%);
             border-radius: 16px;
             padding: 0.9rem;
-            border: 2px solid rgba(255, 182, 193, 0.4);
-            box-shadow: 0 4px 15px rgba(255, 182, 193, 0.1);
+            border: 1px solid rgba(167, 198, 182, 0.35);
+            box-shadow: 0 4px 15px rgba(102, 126, 104, 0.06);
         }
-        .holiday-title { font-size: 0.75rem; color: #ff69b4; margin-bottom: 0.5rem; font-weight: 700; }
-        .holiday-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px dashed rgba(255, 182, 193, 0.3); font-size: 0.8rem; }
+        .holiday-title { font-size: 0.75rem; color: #2d5a3d; margin-bottom: 0.5rem; font-weight: 700; }
+        .holiday-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0; border-bottom: 1px dashed rgba(167, 198, 182, 0.35); font-size: 0.8rem; }
         .holiday-item:last-child { border-bottom: none; }
         .holiday-icon { font-size: 1rem; }
         .holiday-text { color: #6b5b95; flex: 1; }
@@ -405,8 +405,8 @@
         .sync-status.syncing { background: #fff3cd; color: #856404; }
         
         /* 页脚 */
-        .footer { padding: 0.8rem; border-top: 2px dashed rgba(255, 182, 193, 0.3); text-align: center; background: linear-gradient(180deg, transparent 0%, rgba(255, 240, 245, 0.5) 100%); }
-        .footer-text { font-size: 0.75rem; color: #ff8c69; font-weight: 600; }
+        .footer { padding: 0.8rem; border-top: 2px dashed rgba(167, 198, 182, 0.3); text-align: center; background: linear-gradient(180deg, transparent 0%, rgba(240, 249, 244, 0.5) 100%); }
+        .footer-text { font-size: 0.75rem; color: #5a7a6a; font-weight: 600; }
         
         /* ===== 弹窗 ===== */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; justify-content: center; align-items: center; backdrop-filter: blur(5px); }
@@ -416,30 +416,30 @@
         @keyframes modalPop { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
         
         .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-        .modal-title { font-size: 1.1rem; color: #ff69b4; font-weight: 700; }
-        .modal-close { background: none; border: none; font-size: 1.5rem; color: #999; cursor: pointer; }
-        .modal-date { font-size: 0.85rem; color: #9370db; margin-bottom: 1rem; padding: 0.5rem; background: rgba(255, 240, 245, 0.5); border-radius: 8px; text-align: center; }
+        .modal-title { font-size: 1.1rem; color: #2d5a3d; font-weight: 700; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; color: #7a9a8a; cursor: pointer; }
+        .modal-date { font-size: 0.85rem; color: #4a7c59; margin-bottom: 1rem; padding: 0.5rem; background: rgba(167, 216, 188, 0.15); border-radius: 8px; text-align: center; }
         
         .form-group { margin-bottom: 1rem; }
-        .form-label { display: block; font-size: 0.8rem; color: #6b5b95; margin-bottom: 0.3rem; font-weight: 600; }
-        .form-input, .form-textarea { width: 100%; padding: 0.7rem; border: 2px solid rgba(255, 182, 193, 0.3); border-radius: 10px; font-size: 0.9rem; font-family: inherit; transition: all 0.2s; }
-        .form-input:focus, .form-textarea:focus { outline: none; border-color: #ff69b4; }
+        .form-label { display: block; font-size: 0.8rem; color: #4a5a4a; margin-bottom: 0.3rem; font-weight: 600; }
+        .form-input, .form-textarea { width: 100%; padding: 0.7rem; border: 2px solid rgba(167, 198, 182, 0.35); border-radius: 10px; font-size: 0.9rem; font-family: inherit; transition: all 0.2s; }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: #4a7c59; }
         .form-textarea { min-height: 80px; resize: vertical; }
         
         .reminder-type-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .reminder-type-btn { padding: 0.4rem 0.8rem; border: 2px solid rgba(255, 182, 193, 0.3); border-radius: 15px; font-size: 0.75rem; cursor: pointer; background: white; color: #6b5b95; transition: all 0.2s; }
-        .reminder-type-btn.selected { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; border-color: #ff69b4; }
+        .reminder-type-btn { padding: 0.4rem 0.8rem; border: 2px solid rgba(167, 198, 182, 0.35); border-radius: 15px; font-size: 0.75rem; cursor: pointer; background: white; color: #5a7a6a; transition: all 0.2s; }
+        .reminder-type-btn.selected { background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%); color: white; border-color: #4a7c59; }
         
         .modal-buttons { display: flex; gap: 0.5rem; margin-top: 1rem; }
         .modal-btn { flex: 1; padding: 0.8rem; border: none; border-radius: 12px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-        .modal-btn-primary { background: linear-gradient(135deg, #ff69b4 0%, #ff8c69 100%); color: white; }
+        .modal-btn-primary { background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%); color: white; }
         .modal-btn-secondary { background: #f0f0f0; color: #666; }
-        .modal-btn-danger { background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: white; }
+        .modal-btn-danger { background: linear-gradient(135deg, #c44536 0%, #d4685c 100%); color: white; }
         .modal-btn:hover { transform: translateY(-2px); }
         
-        .saved-note-display { background: rgba(255, 240, 245, 0.5); padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; }
-        .saved-note-text { color: #6b5b95; font-size: 0.9rem; line-height: 1.5; }
-        .saved-note-keyword { display: inline-block; background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%); color: white; padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; }
+        .saved-note-display { background: rgba(167, 216, 188, 0.15); padding: 0.8rem; border-radius: 10px; margin-bottom: 1rem; }
+        .saved-note-text { color: #4a5a4a; font-size: 0.9rem; line-height: 1.5; }
+        .saved-note-keyword { display: inline-block; background: linear-gradient(135deg, #4a7c59 0%, #6b9b7a 100%); color: white; padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.75rem; margin-top: 0.5rem; font-weight: 600; }
         
         @media (max-width: 768px) {
             .main-container { padding: 0.3rem; }
