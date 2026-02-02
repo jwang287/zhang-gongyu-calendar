@@ -299,6 +299,30 @@
             padding: 0 3px;
             border-radius: 3px;
         }
+        
+        .calendar-day .day-note-text {
+            font-size: 0.55rem;
+            color: #fff;
+            font-weight: 700;
+            max-width: 95%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-top: 2px;
+            background: linear-gradient(135deg, #ff69b4 0%, #9370db 100%);
+            padding: 1px 4px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(255, 105, 180, 0.3);
+        }
+        
+        .calendar-day.today .day-note-text {
+            background: rgba(255, 255, 255, 0.9);
+            color: #ff69b4;
+        }
+        
+        .calendar-day.has-note {
+            border: 1px solid rgba(255, 105, 180, 0.3);
+        }
         .calendar-day .day-holiday-icon { font-size: 0.6rem; position: absolute; top: 1px; right: 2px; }
         
         .calendar-day:hover { background: rgba(255, 182, 193, 0.3); transform: scale(1.05); }
@@ -1196,6 +1220,8 @@
             const isSelected = date.toDateString() === selectedDate.toDateString();
             const holiday = getHolidayInfo(date);
             const lunar = getLunarDate(date);
+            const dateKey = formatDateKey(date);
+            const note = dailyNotes[dateKey];
             const reminders = getActiveReminders(date);
             
             let classes = ['calendar-day'];
@@ -1206,21 +1232,30 @@
                 if (holiday.rest) classes.push('public-holiday');
                 else classes.push('workday-adjust');
             }
+            if (note && note.text) classes.push('has-note');
             
             let lunarText = '';
             if (holiday) lunarText = holiday.name.length > 2 ? holiday.name.slice(0,2) : holiday.name;
             else if (lunar.day === 1) lunarText = lunarMonths[lunar.month - 1] + '月';
             else lunarText = lunarDays[lunar.day - 1];
             
-            let keywordHtml = '';
-            if (reminders.length > 0) keywordHtml = `<span class="day-keyword">${reminders[0].text}</span>`;
+            // 显示每日记录内容（优先显示直接记录，其次是循环提醒）
+            let noteHtml = '';
+            if (note && note.text) {
+                // 截取前4个字显示
+                const displayText = note.text.slice(0, 4);
+                noteHtml = `<span class="day-note-text" title="${note.text}">${displayText}</span>`;
+            } else if (reminders.length > 0) {
+                // 显示循环提醒的关键词
+                noteHtml = `<span class="day-keyword">${reminders[0].text}</span>`;
+            }
             
             return `
                 <div class="${classes.join(' ')}" onclick="openDayModal(${dayNum})">
                     ${holiday ? `<span class="day-holiday-icon">${holiday.rest ? '🎊' : '💼'}</span>` : ''}
                     <span class="day-num">${dayNum}</span>
                     <span class="day-lunar" style="${holiday ? 'color:' + (holiday.rest ? '#ff1493' : '#0984e3') : ''}">${lunarText}</span>
-                    ${keywordHtml}
+                    ${noteHtml}
                 </div>
             `;
         }
